@@ -24,7 +24,40 @@ model Service {
   id String @id @default(cuid())
   title String
   description String
-  createAt DateTime @default(now())
+  createdAt DateTime @default(now())
 
   @@map("service")
+}
+
+model Project {
+  id String @id @default(cuid())
+  title String 
+  category String
+  imageUrl String
+  techStack String[]
+  description String?
+  createdAt DateTime @default(now())
+
+  @@map("project")
+}
+
+model Stat {
+
+  id String @id @default(cuid())
+  projectsCompleted Int
+  clientWorldwide Int
+  experience Int
+
+  @@map("stat")
+}
+
+model Contact {
+
+  id String @id @default(cuid())
+  name String
+  email String @unique
+  message String
+  createdAt DateTime @default(now())
+
+  @@map("contact")
 }
