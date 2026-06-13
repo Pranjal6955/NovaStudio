@@ -24,3 +24,21 @@ export const createContact = async (req,res) => {
     }
 
 }
+
+export const getContact = async (req,res) =>{
+    try {
+        const getContactForm = await prisma.contact.findMany()
+        return res.status(200).json({
+            success : true,
+            messsage : "All Contact Form are successfully Fetched",
+            data:getContactForm,
+        })
+    } catch (error) {
+        return res.status(401).json({
+            success : false,
+            message : error.message
+        })
+        
+        
+    }
+}
