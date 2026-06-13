@@ -6,6 +6,7 @@ export const getService = async (req,res) => {
         return res.status(200).json({
         sucess:true,
         data:services,
+        message:"All Services fetch Successfully"
     })
         
     } catch (error) { 
