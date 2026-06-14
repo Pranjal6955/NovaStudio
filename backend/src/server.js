@@ -10,11 +10,13 @@ import { statsRoute } from "./routes/stats.routes.js";
 import { contactRoute } from "./routes/contact.routes.js";
 import { authRoute } from "./routes/auth.routes.js";
 import { connectPrismaToDB } from "./config/prisma.js";
+import { connectMongoToDB } from "./config/mongodb.js";
 
 const app = express();
 const PORT = process.env.PORT
 
 connectPrismaToDB()
+connectMongoToDB()
 
 app.use(express.json())
 app.get("/",(req,res)=>{
