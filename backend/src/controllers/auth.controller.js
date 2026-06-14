@@ -2,7 +2,7 @@ import { prisma } from "../config/prisma.js"
 import bcryptjs from "bcryptjs"
 import jwt from "jsonwebtoken"
 
-export const authAdminController = async(req,res) => {
+export const authAdminLoginController = async(req,res) => {
     try {
         const {email,password} = req.body
 
@@ -21,6 +21,7 @@ export const authAdminController = async(req,res) => {
         }
 
         const isPasswordMatch = await bcryptjs.compare(password,admin.password)
+        
         if(!isPasswordMatch){
             return res.status(401).json({
                 success : false,
@@ -41,7 +42,6 @@ export const authAdminController = async(req,res) => {
                 id : admin.id,
                 name : admin.name,
                 email : admin.email,
-                password : admin.password,
             },
             message : "Logged in Successfully"
         })
@@ -49,6 +49,22 @@ export const authAdminController = async(req,res) => {
         return res.status(500).json({
             success : false,
             message : "Internal Server Error"
+        })
+        
+    }
+}
+
+export const logoutAdminController = async(req,res) => {
+    try {
+        res.clearCookie("novaStudio_token");
+        res.status(200).json({
+            success : true,
+            message : "Logout Successfully"
+        })
+    } catch (error) {
+        res.status(500).json({
+            success:false,
+            message : error.message
         })
         
     }

@@ -9,9 +9,12 @@ import { projectRoute } from "./routes/project.routes.js";
 import { statsRoute } from "./routes/stats.routes.js";
 import { contactRoute } from "./routes/contact.routes.js";
 import { authRoute } from "./routes/auth.routes.js";
+import { connectPrismaToDB } from "./config/prisma.js";
 
 const app = express();
 const PORT = process.env.PORT
+
+connectPrismaToDB()
 
 app.use(express.json())
 app.get("/",(req,res)=>{

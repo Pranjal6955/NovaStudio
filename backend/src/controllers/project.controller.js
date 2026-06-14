@@ -44,3 +44,66 @@ export const createProject = async (req,res) => {
     }
     
 }
+
+export const deleteProjectById = async (req,res) => {
+    try {
+        const {id} = req.params;
+        const project = await prisma.project.findUnique({
+            where:{id}
+        })
+        if(!project){
+            return res.status(404).json({
+                success : false,
+                message : "Project not Found"
+            })
+        }
+        await prisma.project.delete({
+            where:{id}
+        })
+        return res.status(200).json({
+            success : true,
+            message : "Project Deleted Successfully",
+        })
+    } catch (error) {
+        return res.status(500).json({
+            success : false,
+            message : error.message
+        })
+        
+    }
+}
+
+export const updateProject = async (req,res) => {
+    try {
+        const {id} = req.params;
+
+        const project = await prisma.project.findUnique({
+            where:{id}
+        })
+
+        if (!project){
+            return res.status(404).json({
+                success : false,
+                message : "Project not Found",
+            })
+        }
+
+        const updateProject = await prisma.project.update({
+            where:{id},
+            data : req.body
+        })
+
+        return res.status(200).json({
+            success:true,
+            data : updateProject,
+            message : "Project Updated Successfully"
+        })
+
+    } catch (error) {
+        return res.status(500).json({
+            success : false,
+            message : error.message,
+        })
+        
+    }
+}
