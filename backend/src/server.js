@@ -9,14 +9,15 @@ import { projectRoute } from "./routes/project.routes.js";
 import { statsRoute } from "./routes/stats.routes.js";
 import { contactRoute } from "./routes/contact.routes.js";
 import { authRoute } from "./routes/auth.routes.js";
+import { analyticsRouter } from "./routes/analytics.routes.js";
 import { connectPrismaToDB } from "./config/prisma.js";
 import { connectMongoToDB } from "./config/mongodb.js";
 
 const app = express();
 const PORT = process.env.PORT
 
-connectPrismaToDB()
-connectMongoToDB()
+await connectPrismaToDB()
+await connectMongoToDB()
 
 app.use(express.json())
 app.get("/",(req,res)=>{
@@ -27,6 +28,7 @@ app.use("/api/project",projectRoute)
 app.use("/api/stats",statsRoute)
 app.use("/api/contact",contactRoute)
 app.use("/api/admin",authRoute)
+app.use("/api/analytic",analyticsRouter)
 
 app.use(morgan("dev"))
 app.use(cookieParser())
