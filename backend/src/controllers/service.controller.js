@@ -1,4 +1,5 @@
 import { prisma } from "../config/prisma.js";
+import { Logs } from "../models/logs.model.js";
 
 export const getService = async (req,res) => {
     try {
@@ -28,6 +29,19 @@ export const createService = async (req,res) => {
         }
 
         const createServices = await prisma.service.create({data:{title,description}})
+        try {
+            await Logs.create({
+                action : "CREATE_SERVICE",
+                adminId : req.admin.id,
+                details : {
+                    seriveId :service.id,
+                    serviceTitle : service.title
+                }
+            })
+        } catch (error) {
+            console.log("Failed to create a log",error)
+            
+        }
         return res.status(201).json({
             success : true,
             data : createServices,
@@ -60,6 +74,17 @@ export const deleteServiceById = async (req,res) => {
         await prisma.service.delete({
             where : {id}
         })
+        try {
+            await Logs.create({
+                action : "DELETE_PROJECT",
+                adminId : req.admin.id,
+                details : {
+                    serviceId: service.id
+                }
+            })
+        } catch (error) {
+            console.log("Failed to create log",error)
+        }
         return res.status(200).json({
             success : true,
             message : "Service Deleted Successfully",
@@ -90,6 +115,18 @@ export const updateService = async (req,res) => {
         where : {id},
         data : req.body,
     })
+
+    try {
+        await Logs.create({
+            action : "UPDATE_SERVICE",
+            admin : req.admin.id,
+            details : {
+                serviceId : service.id
+            }
+        })
+    } catch (error) {
+        console.log("Failed to create a log",error)
+    }
 
     return res.status(200).json({
         success : true,

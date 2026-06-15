@@ -21,7 +21,7 @@ const logsSchema = new mongoose.Schema({
         type : String,
         required : true,
     },
-    detailes : {
+    details : {
         type : Object,
         default : {},
     }
@@ -29,4 +29,4 @@ const logsSchema = new mongoose.Schema({
     timestamps:true
 })
 
-export const logs = mongoose.model("logs",logsSchema)
+export const Logs = mongoose.model("logs",logsSchema)

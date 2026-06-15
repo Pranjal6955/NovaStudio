@@ -1,4 +1,5 @@
 import { prisma } from "../config/prisma.js"
+import { Logs } from "../models/logs.model.js";
 
 export const getProject = async (req,res) => {
     try {
@@ -22,7 +23,7 @@ export const createProject = async (req,res) => {
     try {
         const {title, category,imageUrl,techStack,description} = req.body;
         if(!title || !category || !imageUrl || !techStack){
-            res.status(401).json({
+            return res.status(401).json({
                 success : false,
                 message : "All Fields are Required"
             })
@@ -30,6 +31,19 @@ export const createProject = async (req,res) => {
         const createdProject = await prisma.project.create({
             data : {title,category,imageUrl,techStack,description}
         })
+        try {
+        await Logs.create({
+            action : "CREATE_PROJECT",
+            adminId : req.admin.id,
+            details : {
+                projectId : project.id,
+                projectTitle : project.title,
+            }
+        })
+        } catch (error) {
+            console.log("Faled to create a log",error)
+            
+        }
         return res.status(201).json({
             success : true,
             data : createdProject,
@@ -60,6 +74,18 @@ export const deleteProjectById = async (req,res) => {
         await prisma.project.delete({
             where:{id}
         })
+        try {
+            await Logs.create({
+                action : "DELETE_PROJECT",
+                adminId : req.admin.id,
+                details : {
+                    projectId : project.id
+                }
+            })
+        } catch (error) {
+            console.log("Failed to create a Log",error)
+            
+        }
         return res.status(200).json({
             success : true,
             message : "Project Deleted Successfully",
@@ -92,7 +118,17 @@ export const updateProject = async (req,res) => {
             where:{id},
             data : req.body
         })
-
+        try {
+            await Logs.create({
+                action : "UPDATE_PROJECT",
+                adminId : req.admin.id,
+                details : {
+                    projectId : project.id
+                }
+            })
+        } catch (error) {
+            
+        }
         return res.status(200).json({
             success:true,
             data : updateProject,

@@ -1,4 +1,5 @@
 import { prisma } from "../config/prisma.js"
+import { Logs } from "../models/logs.model.js";
 
 export const getStats = async(req,res) => {
     try {
@@ -34,6 +35,17 @@ export const updateStats = async (req,res) => {
             where : {id},
             data : req.body,
         })
+        try {
+            await Logs.create({
+                action : "UPDATE_STATS",
+                adminId : req.admin.id,
+                details : {
+                    statsId : id
+                }
+            })
+        } catch (error) {
+            console.log("Failed to create a log",error)
+        }
         return res.status(200).json({
             success : true,
             data : updateStats,

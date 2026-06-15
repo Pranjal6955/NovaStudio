@@ -10,6 +10,7 @@ import { statsRoute } from "./routes/stats.routes.js";
 import { contactRoute } from "./routes/contact.routes.js";
 import { authRoute } from "./routes/auth.routes.js";
 import { analyticsRouter } from "./routes/analytics.routes.js";
+import { logsRouter } from "./routes/logs.routes.js";
 import { connectPrismaToDB } from "./config/prisma.js";
 import { connectMongoToDB } from "./config/mongodb.js";
 
@@ -29,6 +30,7 @@ app.use("/api/stats",statsRoute)
 app.use("/api/contact",contactRoute)
 app.use("/api/admin",authRoute)
 app.use("/api/analytic",analyticsRouter)
+app.use("/api/logs",logsRouter)
 
 app.use(morgan("dev"))
 app.use(cookieParser())

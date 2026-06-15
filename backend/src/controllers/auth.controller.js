@@ -1,6 +1,7 @@
 import { prisma } from "../config/prisma.js"
 import bcryptjs from "bcryptjs"
 import jwt from "jsonwebtoken"
+import { Logs } from "../models/logs.model.js"
 
 export const authAdminLoginController = async(req,res) => {
     try {
@@ -36,6 +37,19 @@ export const authAdminLoginController = async(req,res) => {
 
         res.cookie("novaStudio_token",token)
 
+        try {
+        //Added Logs when user is Logged in
+        await Logs.create({
+            action : "LOGIN",
+            adminId : admin.id,
+            details : {
+                email : admin.email
+            }
+        })
+        } catch (error) {
+            console.log("Failed to create log",error)
+        }
+
         res.status(200).json({
             success : true,
             data : {
@@ -45,6 +59,7 @@ export const authAdminLoginController = async(req,res) => {
             },
             message : "Logged in Successfully"
         })
+
     } catch (error) {
         return res.status(500).json({
             success : false,
@@ -57,10 +72,27 @@ export const authAdminLoginController = async(req,res) => {
 export const logoutAdminController = async(req,res) => {
     try {
         res.clearCookie("novaStudio_token");
+
+        try {
+
+        // Added Logs when user Logout 
+        await Logs.create({
+            action : "LOGOUT",
+            adminId : req.admin.id,
+            details : {
+                email : admin.email
+            }
+        })   
+        } catch (error) {
+            console.log("Failed to create a Log",error)
+            
+        }
+
         res.status(200).json({
             success : true,
             message : "Logout Successfully"
         })
+
     } catch (error) {
         res.status(500).json({
             success:false,
