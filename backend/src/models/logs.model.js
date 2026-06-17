@@ -15,6 +15,7 @@ const logsSchema = new mongoose.Schema({
             "DELETE_SERVICE",
             "UPDATE_STATS",
             "CREATE_CONTACT_FORM",
+            "DELETE_CONTACT",
         ]
     },
     adminId : {

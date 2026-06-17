@@ -1,0 +1,206 @@
+"use client";
+
+import { useState } from "react";
+import {
+  Box,
+  Typography,
+  Button,
+  Stack,
+  IconButton,
+  Drawer,
+  List,
+  ListItem,
+  ListItemText,
+  useScrollTrigger,
+  Fade,
+} from "@mui/material";
+import MenuIcon from "@mui/icons-material/Menu";
+
+const navItems = [
+  { label: "Home", href: "#home" },
+  { label: "Services", href: "#services" },
+  { label: "Portfolio", href: "#portfolio" },
+  { label: "Stats", href: "#stats" },
+  { label: "Contact", href: "#contact" },
+];
+
+export default function Navbar() {
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const trigger = useScrollTrigger({ disableHysteresis: true, threshold: 50 });
+
+  const handleDrawerToggle = () => setMobileOpen(!mobileOpen);
+
+  return (
+    <>
+      <Fade in timeout={300}>
+        <Box
+          component="header"
+          sx={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            right: 0,
+            zIndex: 1000,
+            pt: 2,
+            px: 2,
+          }}
+        >
+          <Stack
+            alignItems="center"
+            sx={{
+              maxWidth: 606,
+              mx: "auto",
+              height: 56,
+              borderRadius: "18px",
+              background: trigger ? "rgba(50,50,50,0.95)" : "#323232",
+              backdropFilter: trigger ? "blur(20px)" : "none",
+              WebkitBackdropFilter: trigger ? "blur(20px)" : "none",
+              px: 0.5,
+              boxShadow: trigger ? "0 4px 20px rgba(0,0,0,0.3)" : "0 2px 8px rgba(0,0,0,0.15)",
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "space-between",
+              transition: "all 0.3s ease",
+            }}
+          >
+            <Box
+              component="a"
+              href="/"
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                width: 40,
+                height: 40,
+                borderRadius: "14px",
+                background: "#108B4E",
+                flexShrink: 0,
+                transition: "transform 0.2s",
+                "&:hover": { transform: "scale(1.05)" },
+              }}
+            >
+              <Typography sx={{ color: "#FFF", fontWeight: 700, fontSize: 20 }}>N</Typography>
+            </Box>
+
+            <Stack
+              component="nav"
+              direction="row"
+              alignItems="center"
+              gap={0.5}
+              sx={{ display: { xs: "none", md: "flex" } }}
+            >
+              {navItems.map((item) => (
+                <Button
+                  key={item.label}
+                  href={item.href}
+                  sx={{
+                    color: "#FFF",
+                    fontSize: 16,
+                    fontWeight: 400,
+                    letterSpacing: "-0.5px",
+                    px: 1.5,
+                    py: 1,
+                    borderRadius: "10px",
+                    textTransform: "none",
+                    minWidth: "auto",
+                    "&:hover": { background: "rgba(255,255,255,0.1)" },
+                  }}
+                >
+                  {item.label}
+                </Button>
+              ))}
+            </Stack>
+
+            <IconButton
+              onClick={handleDrawerToggle}
+              sx={{
+                display: { xs: "flex", md: "none" },
+                color: "#ccc",
+                borderRadius: "14px",
+                width: 40,
+                height: 40,
+                background: "rgba(255,255,255,0.05)",
+                "&:hover": { background: "rgba(255,255,255,0.1)", color: "#fff" },
+              }}
+            >
+              <MenuIcon sx={{ fontSize: 22 }} />
+            </IconButton>
+
+            <Button
+              href="/admin/login"
+              sx={{
+                display: { xs: "none", md: "flex" },
+                alignItems: "center",
+                justifyContent: "center",
+                height: 40,
+                px: 2.5,
+                borderRadius: "12px",
+                background: "#108B4E",
+                color: "#FFF",
+                fontSize: 16,
+                fontWeight: 500,
+                letterSpacing: "-0.5px",
+                textTransform: "none",
+                boxShadow: "inset 0 -1px 3px rgba(0,0,0,0.15), inset 0 -4px 8px rgba(0,0,0,0.1)",
+                "&:hover": { background: "#0D7A42" },
+              }}
+            >
+              Get started
+            </Button>
+          </Stack>
+        </Box>
+      </Fade>
+
+      <Drawer
+        anchor="top"
+        open={mobileOpen}
+        onClose={handleDrawerToggle}
+        ModalProps={{ keepMounted: true }}
+        PaperProps={{ sx: { background: "transparent", boxShadow: "none", mt: "72px", px: 2 } }}
+      >
+        <Box
+          sx={{
+            maxWidth: 400,
+            mx: "auto",
+            borderRadius: "24px",
+            background: "#323232",
+            p: 2,
+            boxShadow: "0 20px 40px rgba(0,0,0,0.3)",
+          }}
+        >
+          <List sx={{ p: 0 }}>
+            {navItems.map((item) => (
+              <ListItem
+                key={item.label}
+                component="a"
+                href={item.href}
+                onClick={handleDrawerToggle}
+                sx={{ borderRadius: "14px", mb: 0.5, color: "#FFF", "&:hover": { background: "rgba(255,255,255,0.1)" } }}
+              >
+                <ListItemText primary={item.label} primaryTypographyProps={{ fontSize: 16, fontWeight: 400 }} />
+              </ListItem>
+            ))}
+            <ListItem component="a" href="/admin/login" onClick={handleDrawerToggle} sx={{ mt: 1, p: 0 }}>
+              <Button
+                fullWidth
+                sx={{
+                  height: 40,
+                  borderRadius: "12px",
+                  background: "#108B4E",
+                  color: "#FFF",
+                  fontSize: 16,
+                  fontWeight: 500,
+                  textTransform: "none",
+                  boxShadow: "inset 0 -1px 3px rgba(0,0,0,0.15)",
+                  "&:hover": { background: "#0D7A42" },
+                }}
+              >
+                Get started
+              </Button>
+            </ListItem>
+          </List>
+        </Box>
+      </Drawer>
+    </>
+  );
+}

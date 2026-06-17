@@ -5,10 +5,10 @@ export const prisma = new PrismaClient()
 export const connectPrismaToDB = async () => {
     try {
         prisma.$connect();
-        console.log("Postgres Connected Successfully")
+        console.log("PostgreSQL Connected Successfully")
     } catch (error) {
-        console.error(`Postgres Connected Unsuccessfully`,error.message)
-        
+        console.error(`PostgreSQL Connected Unsuccessfully`, error.message)
+
     }
 
 }

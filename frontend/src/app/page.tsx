@@ -1,20 +1,27 @@
+"use client";
 
-import Hero from "@/components/Hero/Hero"
-import Navbar from "@/components/Navbar/Navbar"
-import Portfolio from "@/components/Portfolio/Portfolio"
-import Services from "@/components/Service/Services"
-import Stats from "@/components/Stats/Stats"
-
-
+import Navbar from "@/components/landing/Navbar";
+import Hero from "@/components/landing/Hero";
+import TrustedBy from "@/components/landing/TrustedBy";
+import Services from "@/components/landing/Services";
+import HowItWorks from "@/components/landing/HowItWorks";
+import Portfolio from "@/components/landing/Portfolio";
+import Stats from "@/components/landing/Stats";
+import Contact from "@/components/landing/Contact";
+import Footer from "@/components/landing/Footer";
 
 export default function Home() {
   return (
-    <>
-    <Navbar />
-    <Hero />
-    <Services />
-    <Portfolio />
-    <Stats />
-    </>
-  )
+    <div style={{ minHeight: "100vh", background: "#F5F5F4" }}>
+      <Navbar />
+      <Hero />
+      <TrustedBy />
+      <Services />
+      <HowItWorks />
+      <Portfolio />
+      <Stats />
+      <Contact />
+      <Footer />
+    </div>
+  );
 }

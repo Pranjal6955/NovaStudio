@@ -16,7 +16,7 @@ export const authAdminLoginController = async(req,res) => {
         const admin = await prisma.admin.findUnique({where : {email}})
         if(!admin){
             return res.status(401).json({
-                success : true,
+                success : false,
                 message : "Invalid Email"
             })
         }
@@ -35,7 +35,13 @@ export const authAdminLoginController = async(req,res) => {
             {expiresIn:"7d"}
         )
 
-        res.cookie("novaStudio_token",token)
+        res.cookie("novaStudio_token",token,{
+            httpOnly: false,
+            secure: false,
+            sameSite: "lax",
+            path: "/",
+            maxAge: 7 * 24 * 60 * 60 * 1000,
+        })
 
         try {
         //Added Logs when user is Logged in
@@ -71,7 +77,12 @@ export const authAdminLoginController = async(req,res) => {
 
 export const logoutAdminController = async(req,res) => {
     try {
-        res.clearCookie("novaStudio_token");
+        res.clearCookie("novaStudio_token",{
+            httpOnly: false,
+            secure: false,
+            sameSite: "lax",
+            path: "/",
+        });
 
         try {
 
