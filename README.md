@@ -106,18 +106,6 @@ npm run dev            # http://localhost:5000
 
 ---
 
-## valzy-web (`valzy-web/`)
-
-**Stack:** Vite 8, React 19, Tailwind CSS 3, TanStack React Query, React Router v7
-
-```bash
-cd valzy-web
-npm install
-npm run dev    # http://localhost:5173
-```
-
----
-
 ## Deployment
 
 ### Backend → Render
