@@ -60,8 +60,8 @@ export const authAdminLoginController = async(req,res) => {
 
         res.cookie("novaStudio_token",token,{
             httpOnly: false,
-            secure: false,
-            sameSite: "lax",
+            secure: true,
+            sameSite: "none",
             path: "/",
             maxAge: 7 * 24 * 60 * 60 * 1000,
         })
@@ -103,8 +103,8 @@ export const logoutAdminController = async(req,res) => {
     try {
         res.clearCookie("novaStudio_token",{
             httpOnly: false,
-            secure: false,
-            sameSite: "lax",
+            secure: true,
+            sameSite: "none",
             path: "/",
         });
 

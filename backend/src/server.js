@@ -27,7 +27,9 @@ app.use(
         origin: (origin, cb) => {
             if (!origin) return cb(null, true);
             const cleaned = origin.replace(/\/+$/, "");
-            return cb(null, allowedOrigins.includes(cleaned));
+            if (allowedOrigins.includes(cleaned)) return cb(null, true);
+            if (cleaned.endsWith(".onrender.com")) return cb(null, true);
+            cb(null, false);
         },
         credentials:true,
     })
