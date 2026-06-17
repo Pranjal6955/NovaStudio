@@ -18,9 +18,17 @@ import { connectMongoToDB } from "./config/mongodb.js";
 const app = express();
 const PORT = process.env.PORT
 
+const allowedOrigins = (process.env.CORS_ORIGIN || "http://localhost:3000")
+    .split(",")
+    .map(s => s.trim().replace(/\/+$/, ""));
+
 app.use(
     cors({
-        origin: process.env.CORS_ORIGIN || "http://localhost:3000",
+        origin: (origin, cb) => {
+            if (!origin) return cb(null, true);
+            const cleaned = origin.replace(/\/+$/, "");
+            return cb(null, allowedOrigins.includes(cleaned));
+        },
         credentials:true,
     })
 )
