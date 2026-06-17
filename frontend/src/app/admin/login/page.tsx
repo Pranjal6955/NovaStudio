@@ -82,6 +82,27 @@ export default function AdminLogin() {
             Enter your credentials to access the dashboard
           </Typography>
 
+          {/* Demo Credentials */}
+          <Box
+            sx={{
+              mb: 3,
+              p: 2,
+              borderRadius: "10px",
+              background: isDark ? "#1A2E1A" : "#E8F5E9",
+              border: isDark ? "1px solid #2D5A2D" : "1px solid #C8E6C9",
+            }}
+          >
+            <Typography sx={{ fontSize: 12, fontWeight: 600, color: "#108B4E", mb: 0.5, textTransform: "uppercase", letterSpacing: "0.5px" }}>
+              Demo Credentials
+            </Typography>
+            <Typography sx={{ fontSize: 13, color: isDark ? "#A5D6A7" : "#2E7D32" }}>
+              Email: <strong>admin@novastudio.com</strong>
+            </Typography>
+            <Typography sx={{ fontSize: 13, color: isDark ? "#A5D6A7" : "#2E7D32" }}>
+              Password: <strong>admin123</strong>
+            </Typography>
+          </Box>
+
           <Box component="form" onSubmit={handleSubmit}>
             <Stack spacing={2.5}>
               <Box>

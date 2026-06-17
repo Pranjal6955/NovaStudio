@@ -165,7 +165,7 @@ export default function Navbar() {
                   "&:hover": { background: "#0D7A42" },
                 }}
               >
-                Get started
+                Admin Login
               </Button>
             </Stack>
           </Stack>
@@ -215,7 +215,7 @@ export default function Navbar() {
                   "&:hover": { background: "#0D7A42" },
                 }}
               >
-                Get started
+                Admin Login
               </Button>
             </ListItem>
           </List>
