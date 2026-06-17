@@ -21,13 +21,22 @@ export const authAdminLoginController = async(req,res) => {
             })
         }
 
-        let isPasswordMatch = false
-        try {
+        const isHashValid = admin.password.startsWith("$2")
+
+        let isPasswordMatch
+        if (isHashValid) {
             isPasswordMatch = await bcryptjs.compare(password, admin.password)
-        } catch {
-            // stored password isn't a valid bcrypt hash (e.g. legacy plain text)
-            // fall back to direct comparison and upgrade on match
+        } else {
+            // stored password is plain text (legacy seed bug)
             isPasswordMatch = password === admin.password
+            if (isPasswordMatch) {
+                // upgrade to bcrypt hash
+                const hashed = await bcryptjs.hash(password, 10)
+                await prisma.admin.update({
+                    where: { id: admin.id },
+                    data: { password: hashed },
+                }).catch(() => {})
+            }
         }
 
         if(!isPasswordMatch){
@@ -37,13 +46,11 @@ export const authAdminLoginController = async(req,res) => {
             })
         }
 
-        // upgrade plain-text password to bcrypt hash if needed
-        if (!admin.password.startsWith("$2")) {
-            const hashed = await bcryptjs.hash(password, 10)
-            await prisma.admin.update({
-                where: { id: admin.id },
-                data: { password: hashed },
-            }).catch(() => {})
+        if (!process.env.JWT_SECRET) {
+            return res.status(500).json({
+                success: false,
+                message: "Server configuration error"
+            })
         }
         const token = jwt.sign(
             {adminId : admin.id, adminEmail : admin.email},
