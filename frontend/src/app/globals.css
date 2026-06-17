@@ -27,11 +27,85 @@
   --max-width-wide: 1320px;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+html.dark {
+  --background: #111111;
+  --foreground: #E5E5E5;
+  --secondary: #1A1A1A;
+  --text-primary: #F0F0F0;
+  --text-secondary: #D4D4D4;
+  --text-muted: #888888;
+  --border: #2A2A2A;
+  --card-bg: #1A1A1A;
+  --surface: #111111;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.3);
+  --shadow-md: 0 4px 6px rgba(0,0,0,0.4);
+  --shadow-lg: 0 10px 25px rgba(0,0,0,0.5);
+  --shadow-xl: 0 20px 40px rgba(0,0,0,0.6);
+
+  /* Features / Services dark overrides */
+  .features-header h2 { color: #F0F0F0; }
+  .feature-card { border: 1px solid #2A2A2A; }
+  .feature-card-text h3 { color: #F0F0F0; }
+  .feature-card-btn { background: #F0F0F0; color: #111111; }
+  .feature-card-btn:hover { background: #FFFFFF; }
+  .feature-card-image-inner img { border: 1px solid #2A2A2A; }
+
+  /* Comparison dark overrides */
+  .comparison-section h2 { color: #F0F0F0; }
+  .comparison-card.compound { border: 1px solid #2A2A2A; }
+  .comparison-card.traditional .comparison-icon-empty { border-color: #555; }
+
+  /* Use cases / Portfolio dark overrides */
+  .usecases-heading h2 { color: #F0F0F0; }
+  .usecases-tab-btn:not(.active):hover { color: #D4D4D4; }
+  .usecases-tab-btn.active { border: 1px solid #2A2A2A; }
+  .usecases-arrow-btn { border-color: #F0F0F0; }
+  .usecases-arrow-btn:hover { background: #F0F0F0; }
+  .usecases-arrow-btn:hover svg { filter: none; }
+  .portfolio-card { border: 1px solid #2A2A2A; }
+  .portfolio-card-content h3 { color: #F0F0F0; }
+  .portfolio-card-image { border-top-color: #2A2A2A; border-left-color: #2A2A2A; }
+  @media (max-width: 768px) {
+    .portfolio-card-image { border-top-color: #2A2A2A; }
   }
+
+  /* Why Us dark overrides */
+  .why-us-section h2 { color: #F0F0F0; }
+  .why-us-card { border: 1px solid #2A2A2A; }
+  .why-us-card h3 { color: #F0F0F0; }
+
+  /* Testimonials dark overrides */
+  .testimonials-header h2 { color: #F0F0F0; }
+
+  /* Pricing dark overrides */
+  .pricing-header h2 { color: #F0F0F0; }
+  .pricing-card { border: 1px solid #2A2A2A; }
+  .pricing-toggle { background: #2A2A2A; }
+  .pricing-toggle.active { background: #108B4E; }
+
+  /* FAQ dark overrides */
+  .faq-left h2 { color: #F0F0F0; }
+  .faq-toggle { background: #2A2A2A; }
+  .faq-toggle-dot { background: #666; }
+  .faq-answer-text { color: #D4D4D4; }
+
+  /* CTA dark overrides */
+  .cta-card { background: #1A1A1A; }
+  .cta-card h1 { color: #F0F0F0; }
+  .cta-card > .cta-content > p { color: #D4D4D4; }
+  .cta-badge-text { color: #888888; }
+  .cta-stars svg { fill: #F0F0F0; }
+  .cta-play-btn { background: rgb(255,84,0); }
+
+  /* Footer dark overrides */
+  .footer-template-info { color: #D4D4D4; }
+  .footer-links a { color: #888888; }
+  .footer-links a:hover { color: #F0F0F0; }
+  .footer-bottom { border-top-color: #2A2A2A; }
+
+  /* Admin dark overrides */
+  .admin-table tr:hover td { background: #1A1A1A; }
+  .admin-table td { border-bottom-color: #2A2A2A; }
 }
 
 * {
@@ -1494,6 +1568,48 @@ img {
 }
 
 /* ============ ADMIN ============ */
+.admin-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 32px;
+  background: var(--card-bg);
+  border-bottom: 1px solid var(--border);
+}
+.admin-topbar h1 {
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--text-primary);
+  letter-spacing: -0.5px;
+}
+.admin-content {
+  padding: 32px;
+}
+.admin-stat-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 24px;
+  margin-bottom: 32px;
+}
+.admin-stat-card {
+  background: var(--card-bg);
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: var(--shadow-sm);
+}
+.admin-stat-card h3 {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 8px;
+}
+.admin-stat-card .value {
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
 .admin-table-wrapper {
   background: var(--card-bg);
   border-radius: 16px;

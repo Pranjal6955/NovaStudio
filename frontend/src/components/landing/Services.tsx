@@ -12,7 +12,14 @@ import {
 import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
 import SpeedIcon from "@mui/icons-material/Speed";
 import TrendingUpIcon from "@mui/icons-material/TrendingUp";
+import DesignServicesIcon from "@mui/icons-material/DesignServices";
+import CodeIcon from "@mui/icons-material/Code";
+import RocketLaunchIcon from "@mui/icons-material/RocketLaunch";
+import BrushIcon from "@mui/icons-material/Brush";
+import DevicesIcon from "@mui/icons-material/Devices";
+import CampaignIcon from "@mui/icons-material/Campaign";
 import { getServices } from "@/services/api";
+import { useThemeMode } from "@/context/ThemeContext";
 
 interface Service {
   id: string;
@@ -20,10 +27,16 @@ interface Service {
   description: string;
 }
 
-const icons = [
+const allIcons = [
   <AutoAwesomeIcon key="ai" sx={{ fontSize: 28, color: "#108B4E" }} />,
   <SpeedIcon key="speed" sx={{ fontSize: 28, color: "#108B4E" }} />,
   <TrendingUpIcon key="growth" sx={{ fontSize: 28, color: "#108B4E" }} />,
+  <DesignServicesIcon key="design" sx={{ fontSize: 28, color: "#108B4E" }} />,
+  <CodeIcon key="code" sx={{ fontSize: 28, color: "#108B4E" }} />,
+  <RocketLaunchIcon key="rocket" sx={{ fontSize: 28, color: "#108B4E" }} />,
+  <BrushIcon key="brush" sx={{ fontSize: 28, color: "#108B4E" }} />,
+  <DevicesIcon key="devices" sx={{ fontSize: 28, color: "#108B4E" }} />,
+  <CampaignIcon key="campaign" sx={{ fontSize: 28, color: "#108B4E" }} />,
 ];
 
 const fallback: Service[] = [
@@ -48,13 +61,14 @@ const fallback: Service[] = [
 ];
 
 export default function Services() {
+  const { isDark } = useThemeMode();
   const [services, setServices] = useState<Service[]>(fallback);
 
   useEffect(() => {
     getServices()
       .then((data) => {
         if (Array.isArray(data) && data.length > 0) {
-          setServices(data.slice(0, 3));
+          setServices(data);
         }
       })
       .catch(() => {});
@@ -66,7 +80,7 @@ export default function Services() {
       sx={{
         py: { xs: 8, md: 14 },
         px: { xs: 3, lg: 0 },
-        background: "#FFFFFF",
+        background: isDark ? "#111111" : "#FFFFFF",
       }}
     >
       <Box sx={{ maxWidth: 1120, mx: "auto" }}>
@@ -77,8 +91,8 @@ export default function Services() {
               mb: 3,
               height: 32,
               borderRadius: "100px",
-              background: "#F0FDF4",
-              border: "1px solid #BBF7D0",
+              background: isDark ? "#1A1A1A" : "#F0FDF4",
+              border: isDark ? "1px solid #2A2A2A" : "1px solid #BBF7D0",
               fontSize: 14,
               fontWeight: 500,
               color: "#108B4E",
@@ -91,7 +105,7 @@ export default function Services() {
               fontWeight: 600,
               letterSpacing: "-2.5px",
               lineHeight: { xs: 1.15, md: 1.1 },
-              color: "#111827",
+              color: isDark ? "#F0F0F0" : "#111827",
               mb: 2,
               maxWidth: 600,
             }}
@@ -102,7 +116,7 @@ export default function Services() {
           <Typography
             sx={{
               fontSize: { xs: 17, md: 20 },
-              color: "#6B7280",
+              color: isDark ? "#888888" : "#6B7280",
               maxWidth: 500,
               lineHeight: 1.6,
             }}
@@ -121,12 +135,14 @@ export default function Services() {
                   borderRadius: "20px",
                   p: { xs: 5, md: 6 },
                   height: "100%",
-                  background: "#FFFFFF",
-                  border: "1px solid #F3F4F6",
+                  background: isDark ? "#1A1A1A" : "#FFFFFF",
+                  border: isDark ? "1px solid #2A2A2A" : "1px solid #F3F4F6",
                   transition: "all 0.3s ease",
                   "&:hover": {
-                    borderColor: "#E5E7EB",
-                    boxShadow: "0 20px 40px rgba(0,0,0,0.06)",
+                    borderColor: isDark ? "#3A3A3A" : "#E5E7EB",
+                    boxShadow: isDark
+                      ? "0 20px 40px rgba(0,0,0,0.3)"
+                      : "0 20px 40px rgba(0,0,0,0.06)",
                     transform: "translateY(-4px)",
                   },
                 }}
@@ -136,20 +152,22 @@ export default function Services() {
                     width: 56,
                     height: 56,
                     borderRadius: "16px",
-                    background: "linear-gradient(135deg, #ECFDF5 0%, #D1FAE5 100%)",
+                    background: isDark
+                      ? "linear-gradient(135deg, #0D2E1A 0%, #0A1F12 100%)"
+                      : "linear-gradient(135deg, #ECFDF5 0%, #D1FAE5 100%)",
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
                     mb: 3,
                   }}
                 >
-                  {icons[i]}
+                  {allIcons[i % allIcons.length]}
                 </Box>
                 <Typography
                   sx={{
                     fontSize: 22,
                     fontWeight: 600,
-                    color: "#111827",
+                    color: isDark ? "#F0F0F0" : "#111827",
                     mb: 1.5,
                     letterSpacing: "-0.5px",
                   }}
@@ -160,7 +178,7 @@ export default function Services() {
                   sx={{
                     fontSize: 16,
                     lineHeight: 1.6,
-                    color: "#6B7280",
+                    color: isDark ? "#888888" : "#6B7280",
                   }}
                 >
                   {service.description}

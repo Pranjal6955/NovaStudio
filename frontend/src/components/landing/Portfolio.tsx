@@ -12,6 +12,7 @@ import {
 } from "@mui/material";
 import ArrowOutwardIcon from "@mui/icons-material/ArrowOutward";
 import { getProjects } from "@/services/api";
+import { useThemeMode } from "@/context/ThemeContext";
 
 interface Project {
   id: string;
@@ -74,6 +75,7 @@ const fallback: Project[] = [
 ];
 
 export default function Portfolio() {
+  const { isDark } = useThemeMode();
   const [projects, setProjects] = useState<Project[]>(fallback);
 
   useEffect(() => {
@@ -92,7 +94,7 @@ export default function Portfolio() {
       sx={{
         py: { xs: 8, md: 14 },
         px: { xs: 3, lg: 0 },
-        background: "#FFFFFF",
+        background: isDark ? "#111111" : "#FFFFFF",
       }}
     >
       <Box sx={{ maxWidth: 1120, mx: "auto" }}>
@@ -104,8 +106,8 @@ export default function Portfolio() {
               mb: 3,
               height: 32,
               borderRadius: "100px",
-              background: "#F0FDF4",
-              border: "1px solid #BBF7D0",
+              background: isDark ? "#1A1A1A" : "#F0FDF4",
+              border: isDark ? "1px solid #2A2A2A" : "1px solid #BBF7D0",
               fontSize: 14,
               fontWeight: 500,
               color: "#108B4E",
@@ -118,7 +120,7 @@ export default function Portfolio() {
               fontWeight: 600,
               letterSpacing: "-2.5px",
               lineHeight: { xs: 1.15, md: 1.1 },
-              color: "#111827",
+              color: isDark ? "#F0F0F0" : "#111827",
               mb: 2,
             }}
           >
@@ -137,7 +139,7 @@ export default function Portfolio() {
           <Typography
             sx={{
               fontSize: { xs: 17, md: 20 },
-              color: "#6B7280",
+              color: isDark ? "#888888" : "#6B7280",
               maxWidth: 480,
               lineHeight: 1.6,
             }}
@@ -155,17 +157,19 @@ export default function Portfolio() {
                 elevation={0}
                 sx={{
                   borderRadius: "20px",
-                  border: "1px solid #F3F4F6",
+                  border: isDark ? "1px solid #2A2A2A" : "1px solid #F3F4F6",
                   overflow: "hidden",
-                  background: "#FFFFFF",
+                  background: isDark ? "#1A1A1A" : "#FFFFFF",
                   height: 440,
                   display: "flex",
                   flexDirection: "column",
                   transition: "all 0.3s ease",
                   "&:hover": {
                     transform: "translateY(-6px)",
-                    boxShadow: "0 20px 40px rgba(0,0,0,0.08)",
-                    borderColor: "#E5E7EB",
+                    boxShadow: isDark
+                      ? "0 20px 40px rgba(0,0,0,0.3)"
+                      : "0 20px 40px rgba(0,0,0,0.08)",
+                    borderColor: isDark ? "#3A3A3A" : "#E5E7EB",
                     "& .portfolio-image": {
                       transform: "scale(1.05)",
                     },
@@ -222,11 +226,13 @@ export default function Portfolio() {
                       left: 12,
                       height: 28,
                       borderRadius: "8px",
-                      background: "rgba(255,255,255,0.95)",
+                      background: isDark
+                        ? "rgba(26,26,26,0.95)"
+                        : "rgba(255,255,255,0.95)",
                       backdropFilter: "blur(8px)",
                       fontSize: 12,
                       fontWeight: 600,
-                      color: "#374151",
+                      color: isDark ? "#D4D4D4" : "#374151",
                       boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
                     }}
                   />
@@ -240,17 +246,19 @@ export default function Portfolio() {
                       width: 36,
                       height: 36,
                       borderRadius: "10px",
-                      background: "#FFFFFF",
+                      background: isDark ? "#2A2A2A" : "#FFFFFF",
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "center",
                       opacity: 0,
                       transform: "translate(4px, 4px)",
                       transition: "all 0.3s ease",
-                      boxShadow: "0 2px 8px rgba(0,0,0,0.15)",
+                      boxShadow: isDark
+                        ? "0 2px 8px rgba(0,0,0,0.3)"
+                        : "0 2px 8px rgba(0,0,0,0.15)",
                     }}
                   >
-                    <ArrowOutwardIcon sx={{ fontSize: 18, color: "#111827" }} />
+                    <ArrowOutwardIcon sx={{ fontSize: 18, color: isDark ? "#F0F0F0" : "#111827" }} />
                   </Box>
                 </Box>
 
@@ -267,7 +275,7 @@ export default function Portfolio() {
                     sx={{
                       fontSize: 20,
                       fontWeight: 600,
-                      color: "#111827",
+                      color: isDark ? "#F0F0F0" : "#111827",
                       mb: 1,
                       lineHeight: 1.3,
                       letterSpacing: "-0.3px",
@@ -278,7 +286,7 @@ export default function Portfolio() {
                   <Typography
                     sx={{
                       fontSize: 14,
-                      color: "#6B7280",
+                      color: isDark ? "#888888" : "#6B7280",
                       lineHeight: 1.6,
                       mb: 2.5,
                       flex: 1,
@@ -299,12 +307,12 @@ export default function Portfolio() {
                         size="small"
                         sx={{
                           fontSize: 12,
-                          background: "#F9FAFB",
-                          color: "#374151",
+                          background: isDark ? "#2A2A2A" : "#F9FAFB",
+                          color: isDark ? "#D4D4D4" : "#374151",
                           fontWeight: 500,
                           height: 26,
                           borderRadius: "6px",
-                          border: "1px solid #F3F4F6",
+                          border: isDark ? "1px solid #3A3A3A" : "1px solid #F3F4F6",
                         }}
                       />
                     ))}

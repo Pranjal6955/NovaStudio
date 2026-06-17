@@ -4,12 +4,8 @@ import { useState } from "react";
 import {
   Box,
   Typography,
-  TextField,
-  Button,
   Stack,
-  Alert,
   Grid,
-  Card,
   Chip,
   IconButton,
 } from "@mui/material";
@@ -18,9 +14,13 @@ import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
 import PhoneOutlinedIcon from "@mui/icons-material/PhoneOutlined";
 import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
-import { createContact } from "@/services/api";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import ErrorIcon from "@mui/icons-material/Error";
+import { createContact, trackEvent } from "@/services/api";
+import { useThemeMode } from "@/context/ThemeContext";
 
 export default function Contact() {
+  const { isDark } = useThemeMode();
   const [form, setForm] = useState({ name: "", email: "", message: "" });
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
 
@@ -29,6 +29,7 @@ export default function Contact() {
     setStatus("loading");
     try {
       await createContact(form);
+      trackEvent({ eventType: "CONTACT_SUBMIT", page: "/", metadata: { name: form.name, email: form.email } }).catch(() => {});
       setStatus("success");
       setForm({ name: "", email: "", message: "" });
     } catch {
@@ -37,10 +38,10 @@ export default function Contact() {
   };
 
   const contactInfo = [
-    { icon: <EmailOutlinedIcon sx={{ fontSize: 20, color: "#108B4E" }} />, label: "Email", value: "hello@novastudio.com" },
-    { icon: <PhoneOutlinedIcon sx={{ fontSize: 20, color: "#108B4E" }} />, label: "Phone", value: "+1 (555) 123-4567" },
-    { icon: <LocationOnOutlinedIcon sx={{ fontSize: 20, color: "#108B4E" }} />, label: "Location", value: "San Francisco, CA" },
-    { icon: <AccessTimeIcon sx={{ fontSize: 20, color: "#108B4E" }} />, label: "Response time", value: "Under 24 hours" },
+    { icon: <EmailOutlinedIcon sx={{ fontSize: 18, color: "#108B4E" }} />, label: "Email", value: "hello@novastudio.com" },
+    { icon: <PhoneOutlinedIcon sx={{ fontSize: 18, color: "#108B4E" }} />, label: "Phone", value: "+1 (555) 123-4567" },
+    { icon: <LocationOnOutlinedIcon sx={{ fontSize: 18, color: "#108B4E" }} />, label: "Location", value: "San Francisco, CA" },
+    { icon: <AccessTimeIcon sx={{ fontSize: 18, color: "#108B4E" }} />, label: "Response time", value: "Under 24 hours" },
   ];
 
   return (
@@ -49,7 +50,7 @@ export default function Contact() {
       sx={{
         py: { xs: 8, md: 14 },
         px: { xs: 3, lg: 0 },
-        background: "#FFFFFF",
+        background: isDark ? "#111111" : "#FFFFFF",
       }}
     >
       <Box sx={{ maxWidth: 720, mx: "auto" }}>
@@ -61,8 +62,8 @@ export default function Contact() {
               mb: 3,
               height: 32,
               borderRadius: "100px",
-              background: "#F0FDF4",
-              border: "1px solid #BBF7D0",
+              background: isDark ? "#1A1A1A" : "#F0FDF4",
+              border: isDark ? "1px solid #2A2A2A" : "1px solid #BBF7D0",
               fontSize: 14,
               fontWeight: 500,
               color: "#108B4E",
@@ -75,7 +76,7 @@ export default function Contact() {
               fontWeight: 600,
               letterSpacing: "-2.5px",
               lineHeight: { xs: 1.15, md: 1.1 },
-              color: "#111827",
+              color: isDark ? "#F0F0F0" : "#111827",
               mb: 2,
             }}
           >
@@ -94,7 +95,7 @@ export default function Contact() {
           <Typography
             sx={{
               fontSize: { xs: 17, md: 20 },
-              color: "#6B7280",
+              color: isDark ? "#888888" : "#6B7280",
               maxWidth: 480,
               lineHeight: 1.6,
             }}
@@ -105,7 +106,7 @@ export default function Contact() {
         </Stack>
 
         {/* Contact Info Strip */}
-        <Grid container spacing={2} sx={{ mb: { xs: 5, md: 6 } }}>
+        <Grid container spacing={1.5} sx={{ mb: { xs: 5, md: 6 } }}>
           {contactInfo.map((item) => (
             <Grid key={item.label} size={{ xs: 6, md: 3 }}>
               <Box
@@ -115,22 +116,22 @@ export default function Contact() {
                   gap: 1.5,
                   py: 2,
                   px: 2,
-                  borderRadius: "14px",
-                  background: "#F9FAFB",
-                  border: "1px solid #F3F4F6",
+                  borderRadius: "8px",
+                  background: isDark ? "#1A1A1A" : "#F9FAFB",
+                  border: isDark ? "1px solid #2A2A2A" : "1px solid #F3F4F6",
                   transition: "all 0.2s",
                   "&:hover": {
-                    borderColor: "#E5E7EB",
-                    background: "#FFFFFF",
+                    borderColor: isDark ? "#3A3A3A" : "#E5E7EB",
+                    background: isDark ? "#222222" : "#FFFFFF",
                   },
                 }}
               >
                 <Box
                   sx={{
-                    width: 36,
-                    height: 36,
-                    borderRadius: "10px",
-                    background: "#F0FDF4",
+                    width: 34,
+                    height: 34,
+                    borderRadius: "8px",
+                    background: isDark ? "#0D2E1A" : "#F0FDF4",
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
@@ -140,13 +141,13 @@ export default function Contact() {
                   {item.icon}
                 </Box>
                 <Box sx={{ minWidth: 0 }}>
-                  <Typography sx={{ fontSize: 12, color: "#9CA3AF", fontWeight: 500, lineHeight: 1.2 }}>
+                  <Typography sx={{ fontSize: 11, color: isDark ? "#666666" : "#9CA3AF", fontWeight: 500, lineHeight: 1.2, textTransform: "uppercase", letterSpacing: "0.3px" }}>
                     {item.label}
                   </Typography>
                   <Typography
                     sx={{
                       fontSize: 13,
-                      color: "#374151",
+                      color: isDark ? "#D4D4D4" : "#374151",
                       fontWeight: 500,
                       lineHeight: 1.3,
                       overflow: "hidden",
@@ -163,129 +164,129 @@ export default function Contact() {
         </Grid>
 
         {/* Form Card */}
-        <Card
-          elevation={0}
+        <Box
           sx={{
-            borderRadius: "24px",
-            border: "1px solid #F3F4F6",
-            background: "#FFFFFF",
-            boxShadow: "0 4px 24px rgba(0,0,0,0.04), 0 1px 2px rgba(0,0,0,0.02)",
+            borderRadius: "12px",
+            border: isDark ? "1px solid #2A2A2A" : "1px solid #F3F4F6",
+            background: isDark ? "#1A1A1A" : "#FFFFFF",
+            boxShadow: isDark
+              ? "0 1px 3px rgba(0,0,0,0.2)"
+              : "0 1px 3px rgba(0,0,0,0.04), 0 1px 2px rgba(0,0,0,0.02)",
             overflow: "hidden",
           }}
         >
-          <Box sx={{ p: { xs: 5, md: 7 } }}>
+          <Box sx={{ p: { xs: 4, md: 5 } }}>
             <Box component="form" onSubmit={handleSubmit}>
-              <Stack spacing={3.5}>
-                <Grid container spacing={3}>
+              <Stack spacing={3}>
+                <Grid container spacing={2.5}>
                   <Grid size={{ xs: 12, sm: 6 }}>
-                    <TextField
-                      label="Full Name"
+                    <Typography sx={{ fontSize: 13, fontWeight: 500, color: isDark ? "#D4D4D4" : "#374151", mb: 1 }}>Full Name</Typography>
+                    <input
                       required
-                      fullWidth
                       value={form.name}
                       onChange={(e) => setForm({ ...form, name: e.target.value })}
                       placeholder="John Doe"
-                      size="medium"
-                      sx={{
-                        "& .MuiOutlinedInput-root": {
-                          borderRadius: "12px",
-                          fontSize: 15,
-                          "&:hover fieldset": { borderColor: "#108B4E" },
-                        },
-                        "& .Mui-focused fieldset": { borderColor: "#108B4E" },
-                        "& .MuiInputLabel-root.Mui-focused": { color: "#108B4E" },
+                      style={{
+                        width: "100%", padding: "11px 14px", borderRadius: "8px",
+                        border: isDark ? "1px solid #3A3A3A" : "1px solid #E5E7EB",
+                        background: isDark ? "#222222" : "#F9FAFB",
+                        color: isDark ? "#F0F0F0" : "#111827", fontSize: 15, outline: "none",
+                        transition: "all 0.2s", fontFamily: "inherit",
                       }}
+                      onFocus={(e) => { e.target.style.borderColor = "#108B4E"; e.target.style.boxShadow = "0 0 0 3px rgba(16,139,78,0.08)"; e.target.style.background = isDark ? "#2A2A2A" : "#FFFFFF"; }}
+                      onBlur={(e) => { e.target.style.borderColor = isDark ? "#3A3A3A" : "#E5E7EB"; e.target.style.boxShadow = "none"; e.target.style.background = isDark ? "#222222" : "#F9FAFB"; }}
                     />
                   </Grid>
                   <Grid size={{ xs: 12, sm: 6 }}>
-                    <TextField
-                      label="Email Address"
+                    <Typography sx={{ fontSize: 13, fontWeight: 500, color: isDark ? "#D4D4D4" : "#374151", mb: 1 }}>Email Address</Typography>
+                    <input
                       type="email"
                       required
-                      fullWidth
                       value={form.email}
                       onChange={(e) => setForm({ ...form, email: e.target.value })}
                       placeholder="john@example.com"
-                      size="medium"
-                      sx={{
-                        "& .MuiOutlinedInput-root": {
-                          borderRadius: "12px",
-                          fontSize: 15,
-                          "&:hover fieldset": { borderColor: "#108B4E" },
-                        },
-                        "& .Mui-focused fieldset": { borderColor: "#108B4E" },
-                        "& .MuiInputLabel-root.Mui-focused": { color: "#108B4E" },
+                      style={{
+                        width: "100%", padding: "11px 14px", borderRadius: "8px",
+                        border: isDark ? "1px solid #3A3A3A" : "1px solid #E5E7EB",
+                        background: isDark ? "#222222" : "#F9FAFB",
+                        color: isDark ? "#F0F0F0" : "#111827", fontSize: 15, outline: "none",
+                        transition: "all 0.2s", fontFamily: "inherit",
                       }}
+                      onFocus={(e) => { e.target.style.borderColor = "#108B4E"; e.target.style.boxShadow = "0 0 0 3px rgba(16,139,78,0.08)"; e.target.style.background = isDark ? "#2A2A2A" : "#FFFFFF"; }}
+                      onBlur={(e) => { e.target.style.borderColor = isDark ? "#3A3A3A" : "#E5E7EB"; e.target.style.boxShadow = "none"; e.target.style.background = isDark ? "#222222" : "#F9FAFB"; }}
                     />
                   </Grid>
                 </Grid>
-                <TextField
-                  label="Message"
-                  required
-                  multiline
-                  rows={5}
-                  fullWidth
-                  value={form.message}
-                  onChange={(e) => setForm({ ...form, message: e.target.value })}
-                  placeholder="Tell us about your project, goals, and timeline..."
-                  size="medium"
-                  sx={{
-                    "& .MuiOutlinedInput-root": {
-                      borderRadius: "12px",
-                      fontSize: 15,
-                      "&:hover fieldset": { borderColor: "#108B4E" },
-                    },
-                    "& .Mui-focused fieldset": { borderColor: "#108B4E" },
-                    "& .MuiInputLabel-root.Mui-focused": { color: "#108B4E" },
-                  }}
-                />
+                <Box>
+                  <Typography sx={{ fontSize: 13, fontWeight: 500, color: isDark ? "#D4D4D4" : "#374151", mb: 1 }}>Message</Typography>
+                  <textarea
+                    required
+                    rows={4}
+                    value={form.message}
+                    onChange={(e) => setForm({ ...form, message: e.target.value })}
+                    placeholder="Tell us about your project, goals, and timeline..."
+                    style={{
+                      width: "100%", padding: "11px 14px", borderRadius: "8px",
+                      border: isDark ? "1px solid #3A3A3A" : "1px solid #E5E7EB",
+                      background: isDark ? "#222222" : "#F9FAFB",
+                      color: isDark ? "#F0F0F0" : "#111827", fontSize: 15, outline: "none",
+                      transition: "all 0.2s", fontFamily: "inherit",
+                      resize: "vertical", lineHeight: "1.5",
+                    }}
+                    onFocus={(e) => { e.target.style.borderColor = "#108B4E"; e.target.style.boxShadow = "0 0 0 3px rgba(16,139,78,0.08)"; e.target.style.background = isDark ? "#2A2A2A" : "#FFFFFF"; }}
+                    onBlur={(e) => { e.target.style.borderColor = isDark ? "#3A3A3A" : "#E5E7EB"; e.target.style.boxShadow = "none"; e.target.style.background = isDark ? "#222222" : "#F9FAFB"; }}
+                  />
+                </Box>
 
                 {status === "success" && (
-                  <Alert
-                    severity="success"
-                    sx={{ borderRadius: "12px", fontSize: 14 }}
-                  >
-                    Message sent successfully! We&apos;ll get back to you soon.
-                  </Alert>
+                  <Stack direction="row" alignItems="center" spacing={1.5} sx={{
+                    p: 2, borderRadius: "8px", background: isDark ? "#0D2E1A" : "#F0FDF4",
+                    border: isDark ? "1px solid #108B4E" : "1px solid #BBF7D0",
+                  }}>
+                    <CheckCircleIcon sx={{ fontSize: 18, color: "#108B4E" }} />
+                    <Typography sx={{ fontSize: 14, color: "#108B4E", fontWeight: 500 }}>
+                      Message sent successfully! We&apos;ll get back to you soon.
+                    </Typography>
+                  </Stack>
                 )}
                 {status === "error" && (
-                  <Alert
-                    severity="error"
-                    sx={{ borderRadius: "12px", fontSize: 14 }}
-                  >
-                    Failed to send message. Please try again.
-                  </Alert>
+                  <Stack direction="row" alignItems="center" spacing={1.5} sx={{
+                    p: 2, borderRadius: "8px", background: isDark ? "#2D0A0A" : "#FEF2F2",
+                    border: isDark ? "1px solid #DC2626" : "1px solid #FECACA",
+                  }}>
+                    <ErrorIcon sx={{ fontSize: 18, color: "#DC2626" }} />
+                    <Typography sx={{ fontSize: 14, color: "#DC2626", fontWeight: 500 }}>
+                      Failed to send message. Please try again.
+                    </Typography>
+                  </Stack>
                 )}
 
-                <Button
+                <Box
+                  component="button"
                   type="submit"
-                  variant="contained"
-                  endIcon={<SendIcon />}
                   disabled={status === "loading"}
                   sx={{
-                    height: 52,
-                    borderRadius: "12px",
-                    fontSize: 16,
-                    fontWeight: 600,
-                    textTransform: "none",
+                    width: "100%", height: 48, borderRadius: "8px", border: "none",
                     background: "linear-gradient(135deg, #108B4E 0%, #059669 100%)",
-                    boxShadow: "0 4px 14px rgba(16,139,78,0.35)",
-                    "&:hover": {
-                      background: "linear-gradient(135deg, #0D7A42 0%, #047837 100%)",
-                      boxShadow: "0 6px 20px rgba(16,139,78,0.45)",
-                    },
-                    "&.Mui-disabled": {
-                      background: "#E5E7EB",
-                      boxShadow: "none",
-                    },
+                    color: "#FFF", fontSize: 15, fontWeight: 600,
+                    cursor: status === "loading" ? "not-allowed" : "pointer",
+                    opacity: status === "loading" ? 0.7 : 1,
+                    display: "flex", alignItems: "center", justifyContent: "center", gap: 1,
+                    transition: "all 0.2s",
+                    boxShadow: "0 1px 3px rgba(16,139,78,0.2)",
+                    "&:hover": status !== "loading" ? {
+                      boxShadow: "0 4px 12px rgba(16,139,78,0.3)",
+                      transform: "translateY(-1px)",
+                    } : {},
                   }}
                 >
                   {status === "loading" ? "Sending..." : "Send Message"}
-                </Button>
+                  {status !== "loading" && <SendIcon sx={{ fontSize: 18 }} />}
+                </Box>
               </Stack>
             </Box>
           </Box>
-        </Card>
+        </Box>
 
         {/* Social Row */}
         <Stack direction="row" justifyContent="center" spacing={1.5} sx={{ mt: { xs: 4, md: 5 } }}>
@@ -299,12 +300,12 @@ export default function Contact() {
               key={social.name}
               aria-label={social.name}
               sx={{
-                width: 40,
-                height: 40,
-                borderRadius: "12px",
-                background: "#F9FAFB",
-                border: "1px solid #F3F4F6",
-                color: "#6B7280",
+                width: 38,
+                height: 38,
+                borderRadius: "8px",
+                background: isDark ? "#1A1A1A" : "#F9FAFB",
+                border: isDark ? "1px solid #2A2A2A" : "1px solid #F3F4F6",
+                color: isDark ? "#888888" : "#6B7280",
                 transition: "all 0.2s",
                 "&:hover": {
                   background: "#108B4E",

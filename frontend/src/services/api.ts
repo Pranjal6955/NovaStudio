@@ -90,7 +90,7 @@ export const trackEvent = (data: {
 }) => api.post("/api/analytic/", data).then((r) => r.data);
 
 export const getAnalytics = () =>
-  api.get("/api/analytic/").then((r) => r.data.data);
+  api.get("/api/analytic/").then((r) => r.data);
 
 // ---------- Logs ----------
 export const getLogs = () =>

@@ -3,12 +3,15 @@
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { AuthProvider, useAuth } from "@/context/AuthContext";
+import { useThemeMode } from "@/context/ThemeContext";
 import { Box, Typography, Stack } from "@mui/material";
+import DarkModeIcon from "@mui/icons-material/DarkMode";
+import LightModeIcon from "@mui/icons-material/LightMode";
 
 const navItems = [
   { label: "Dashboard", href: "/admin", icon: "M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z" },
   { label: "Services", href: "/admin/services", icon: "M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58a.49.49 0 00.12-.61l-1.92-3.32a.49.49 0 00-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54a.484.484 0 00-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.07.62-.07.94s.02.64.07.94l-2.03 1.58a.49.49 0 00-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6A3.6 3.6 0 1115.6 12 3.6 3.6 0 0112 15.6z" },
-  { label: "Projects", href: "/admin/projects", icon: "M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14z" },
+  { label: "Projects", href: "/admin/projects", icon: "M10 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-8l-2-2z" },
   { label: "Stats", href: "/admin/stats", icon: "M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6z" },
   { label: "Contacts", href: "/admin/contacts", icon: "M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" },
   { label: "Analytics", href: "/admin/analytics", icon: "M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z" },
@@ -17,13 +20,21 @@ const navItems = [
 function SidebarContent() {
   const pathname = usePathname();
   const { logout } = useAuth();
+  const { isDark, toggle } = useThemeMode();
+
+  const navBg = isDark ? "#0A0A0A" : "#FFFFFF";
+  const navBorder = isDark ? "#1F1F1F" : "#E5E7EB";
+  const navText = isDark ? "#94A3B8" : "#64748B";
+  const navTextHover = isDark ? "#CBD5E1" : "#334155";
+  const navHover = isDark ? "rgba(255,255,255,0.05)" : "#F3F4F6";
+  const navActive = isDark ? "rgba(74,222,128,0.1)" : "#ECFDF5";
 
   return (
     <Box
       sx={{
         width: 240,
-        background: "#FFFFFF",
-        borderRight: "1px solid #F3F4F6",
+        background: navBg,
+        borderRight: `1px solid ${navBorder}`,
         display: "flex",
         flexDirection: "column",
         position: "fixed",
@@ -31,15 +42,16 @@ function SidebarContent() {
         left: 0,
         bottom: 0,
         zIndex: 100,
+        transition: "background 0.2s, border-color 0.2s",
       }}
     >
       {/* Logo */}
-      <Box sx={{ px: 3, py: 3, borderBottom: "1px solid #F3F4F6" }}>
+      <Box sx={{ px: 3, py: 3, borderBottom: `1px solid ${navBorder}` }}>
         <Link href="/" style={{ display: "flex", alignItems: "center", gap: 10, textDecoration: "none" }}>
           <Box sx={{ width: 32, height: 32, borderRadius: "8px", background: "#108B4E", display: "flex", alignItems: "center", justifyContent: "center" }}>
             <Typography sx={{ color: "#FFF", fontWeight: 700, fontSize: 16 }}>N</Typography>
           </Box>
-          <Typography sx={{ fontSize: 16, fontWeight: 600, color: "#111827", letterSpacing: "-0.3px" }}>
+          <Typography sx={{ fontSize: 16, fontWeight: 600, color: isDark ? "#E2E8F0" : "#1E293B", letterSpacing: "-0.3px" }}>
             NovaStudio
           </Typography>
         </Link>
@@ -50,11 +62,7 @@ function SidebarContent() {
         {navItems.map((item) => {
           const isActive = pathname === item.href;
           return (
-            <Link
-              key={item.href}
-              href={item.href}
-              style={{ textDecoration: "none" }}
-            >
+            <Link key={item.href} href={item.href} style={{ textDecoration: "none" }}>
               <Box
                 sx={{
                   display: "flex",
@@ -65,21 +73,16 @@ function SidebarContent() {
                   borderRadius: "8px",
                   fontSize: 14,
                   fontWeight: isActive ? 500 : 400,
-                  color: isActive ? "#108B4E" : "#6B7280",
-                  background: isActive ? "#F0FDF4" : "transparent",
+                  color: isActive ? "#4ADE80" : navText,
+                  background: isActive ? navActive : "transparent",
                   transition: "all 0.15s",
                   "&:hover": {
-                    background: isActive ? "#F0FDF4" : "#F9FAFB",
-                    color: isActive ? "#108B4E" : "#374151",
+                    background: isActive ? navActive : navHover,
+                    color: isActive ? "#4ADE80" : navTextHover,
                   },
                 }}
               >
-                <Box
-                  component="svg"
-                  sx={{ width: 18, height: 18, flexShrink: 0 }}
-                  viewBox="0 0 24 24"
-                  fill="currentColor"
-                >
+                <Box component="svg" sx={{ width: 18, height: 18, flexShrink: 0 }} viewBox="0 0 24 24" fill="currentColor">
                   <path d={item.icon} />
                 </Box>
                 {item.label}
@@ -90,7 +93,28 @@ function SidebarContent() {
       </Box>
 
       {/* Footer */}
-      <Box sx={{ p: 2, borderTop: "1px solid #F3F4F6", display: "flex", flexDirection: "column", gap: 0.5 }}>
+      <Box sx={{ p: 2, borderTop: `1px solid ${navBorder}`, display: "flex", flexDirection: "column", gap: 0.5 }}>
+        {/* Theme Toggle */}
+        <Box
+          onClick={toggle}
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            gap: 1.5,
+            px: 2,
+            py: 1.5,
+            borderRadius: "8px",
+            fontSize: 14,
+            color: navText,
+            cursor: "pointer",
+            transition: "all 0.15s",
+            "&:hover": { background: navHover, color: navTextHover },
+          }}
+        >
+          {isDark ? <LightModeIcon sx={{ fontSize: 18 }} /> : <DarkModeIcon sx={{ fontSize: 18 }} />}
+          {isDark ? "Light Mode" : "Dark Mode"}
+        </Box>
+
         <Link href="/" style={{ textDecoration: "none" }}>
           <Box
             sx={{
@@ -101,9 +125,9 @@ function SidebarContent() {
               py: 1.5,
               borderRadius: "8px",
               fontSize: 14,
-              color: "#6B7280",
+              color: navText,
               transition: "all 0.15s",
-              "&:hover": { background: "#F9FAFB", color: "#374151" },
+              "&:hover": { background: navHover, color: navTextHover },
             }}
           >
             <Box component="svg" sx={{ width: 18, height: 18 }} viewBox="0 0 24 24" fill="currentColor">
@@ -122,10 +146,10 @@ function SidebarContent() {
             py: 1.5,
             borderRadius: "8px",
             fontSize: 14,
-            color: "#6B7280",
+            color: navText,
             cursor: "pointer",
             transition: "all 0.15s",
-            "&:hover": { background: "#FEF2F2", color: "#DC2626" },
+            "&:hover": { background: isDark ? "rgba(239,68,68,0.1)" : "#FEF2F2", color: "#F87171" },
           }}
         >
           <Box component="svg" sx={{ width: 18, height: 18 }} viewBox="0 0 24 24" fill="currentColor">
@@ -138,12 +162,9 @@ function SidebarContent() {
   );
 }
 
-export default function AdminLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
+  const { isDark } = useThemeMode();
   const isLoginPage = pathname === "/admin/login";
 
   if (isLoginPage) {
@@ -152,9 +173,9 @@ export default function AdminLayout({
 
   return (
     <AuthProvider>
-      <Box sx={{ display: "flex", minHeight: "100vh", background: "#F8FAFC" }}>
+      <Box sx={{ display: "flex", minHeight: "100vh", background: isDark ? "#0A0A0A" : "#F8FAFC", transition: "background 0.2s" }}>
         <SidebarContent />
-        <Box component="main" sx={{ ml: 240, flex: 1, minHeight: "100vh" }}>
+        <Box component="main" sx={{ ml: "240px", flex: 1, minHeight: "100vh" }}>
           {children}
         </Box>
       </Box>

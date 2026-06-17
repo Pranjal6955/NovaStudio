@@ -9,8 +9,14 @@ import {
 } from "@mui/material";
 import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
 import PlayArrowRoundedIcon from "@mui/icons-material/PlayArrowRounded";
+import { trackEvent } from "@/services/api";
+import { useThemeMode } from "@/context/ThemeContext";
 
 export default function Hero() {
+  const { isDark } = useThemeMode();
+  const handleCtaClick = (label: string) => {
+    trackEvent({ eventType: "CTA_CLICK", page: "/", metadata: { label } }).catch(() => {});
+  };
   return (
     <Box
       id="home"
@@ -21,7 +27,9 @@ export default function Hero() {
         px: { xs: 2, sm: 3, lg: 4 },
         position: "relative",
         overflow: "hidden",
-        background: "linear-gradient(180deg, #F0FDF4 0%, #FFFFFF 50%, #F5F5F4 100%)",
+        background: isDark
+          ? "linear-gradient(180deg, #0A1A0F 0%, #111111 50%, #111111 100%)"
+          : "linear-gradient(180deg, #F0FDF4 0%, #FFFFFF 50%, #F5F5F4 100%)",
         "&::before": {
           content: '""',
           position: "absolute",
@@ -31,7 +39,9 @@ export default function Hero() {
           width: "800px",
           height: "800px",
           borderRadius: "50%",
-          background: "radial-gradient(circle, rgba(16,139,78,0.08) 0%, transparent 70%)",
+          background: isDark
+            ? "radial-gradient(circle, rgba(16,139,78,0.15) 0%, transparent 70%)"
+            : "radial-gradient(circle, rgba(16,139,78,0.08) 0%, transparent 70%)",
           pointerEvents: "none",
         },
       }}
@@ -44,13 +54,13 @@ export default function Hero() {
             mb: 4,
             height: 36,
             borderRadius: "100px",
-            background: "#FFFFFF",
-            border: "1px solid #E5E7EB",
+            background: isDark ? "#1A1A1A" : "#FFFFFF",
+            border: isDark ? "1px solid #2A2A2A" : "1px solid #E5E7EB",
             fontSize: 14,
             fontWeight: 500,
-            color: "#374151",
+            color: isDark ? "#D4D4D4" : "#374151",
             px: 1,
-            boxShadow: "0 2px 8px rgba(0,0,0,0.04)",
+            boxShadow: isDark ? "0 2px 8px rgba(0,0,0,0.2)" : "0 2px 8px rgba(0,0,0,0.04)",
             "& .MuiChip-label": { px: 1.5 },
           }}
         />
@@ -62,7 +72,7 @@ export default function Hero() {
             fontWeight: 600,
             lineHeight: { xs: 1.1, md: 1.05 },
             letterSpacing: { xs: "-1.5px", md: "-3px" },
-            color: "#111827",
+            color: isDark ? "#F0F0F0" : "#111827",
             mb: 3,
           }}
         >
@@ -83,7 +93,7 @@ export default function Hero() {
           sx={{
             fontSize: { xs: 18, md: 21 },
             lineHeight: 1.6,
-            color: "#6B7280",
+            color: isDark ? "#888888" : "#6B7280",
             maxWidth: 560,
             mx: "auto",
             mb: 5,
@@ -97,6 +107,7 @@ export default function Hero() {
           <Button
             href="/admin/login"
             disableElevation
+            onClick={() => handleCtaClick("Get started free")}
             sx={{
               height: 52,
               px: 4,
@@ -120,21 +131,22 @@ export default function Hero() {
           <Button
             href="#portfolio"
             startIcon={<PlayArrowRoundedIcon />}
+            onClick={() => handleCtaClick("See our work")}
             sx={{
               height: 52,
               px: 4,
               borderRadius: "14px",
-              background: "#FFFFFF",
-              color: "#374151",
+              background: isDark ? "#1A1A1A" : "#FFFFFF",
+              color: isDark ? "#D4D4D4" : "#374151",
               fontSize: 17,
               fontWeight: 500,
               textTransform: "none",
-              border: "1px solid #E5E7EB",
-              boxShadow: "0 1px 3px rgba(0,0,0,0.06)",
+              border: isDark ? "1px solid #2A2A2A" : "1px solid #E5E7EB",
+              boxShadow: isDark ? "0 1px 3px rgba(0,0,0,0.2)" : "0 1px 3px rgba(0,0,0,0.06)",
               transition: "all 0.2s",
               "&:hover": {
-                background: "#F9FAFB",
-                borderColor: "#D1D5DB",
+                background: isDark ? "#222222" : "#F9FAFB",
+                borderColor: isDark ? "#3A3A3A" : "#D1D5DB",
               },
             }}
           >

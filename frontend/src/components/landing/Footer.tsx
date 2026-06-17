@@ -2,6 +2,7 @@
 
 import { Box, Typography, Stack, Button, IconButton, Divider, Grid } from "@mui/material";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import { useThemeMode } from "@/context/ThemeContext";
 
 const footerLinks = {
   Product: ["Features", "Pricing", "Changelog", "Documentation"],
@@ -18,12 +19,13 @@ const socials = [
 ];
 
 export default function Footer() {
+  const { isDark } = useThemeMode();
   return (
     <Box
       component="footer"
       sx={{
-        background: "#F5F5F4",
-        color: "#111827",
+        background: isDark ? "#111111" : "#F5F5F4",
+        color: isDark ? "#F0F0F0" : "#111827",
         pt: { xs: 8, md: 12 },
         pb: { xs: 6, md: 8 },
         px: { xs: 3, lg: 0 },
@@ -94,11 +96,11 @@ export default function Footer() {
               <Box sx={{ width: 36, height: 36, borderRadius: "10px", background: "#108B4E", display: "flex", alignItems: "center", justifyContent: "center" }}>
                 <Typography sx={{ color: "#FFF", fontWeight: 700, fontSize: 18 }}>N</Typography>
               </Box>
-              <Typography sx={{ fontSize: 20, fontWeight: 600, color: "#111827", letterSpacing: "-0.5px" }}>
+              <Typography sx={{ fontSize: 20, fontWeight: 600, color: isDark ? "#F0F0F0" : "#111827", letterSpacing: "-0.5px" }}>
                 NovaStudio
               </Typography>
             </Stack>
-            <Typography sx={{ fontSize: 15, color: "#6B7280", lineHeight: 1.6, mb: 3, maxWidth: 280 }}>
+            <Typography sx={{ fontSize: 15, color: isDark ? "#888888" : "#6B7280", lineHeight: 1.6, mb: 3, maxWidth: 280 }}>
               AI-powered digital agency platform. Build, launch, and scale your digital products faster than ever.
             </Typography>
             <Stack direction="row" spacing={1}>
@@ -106,7 +108,10 @@ export default function Footer() {
                 <IconButton
                   key={social.name}
                   aria-label={social.name}
-                  sx={{ color: "#6B7280", "&:hover": { color: "#108B4E", background: "#F0FDF4" } }}
+                  sx={{
+                    color: isDark ? "#888888" : "#6B7280",
+                    "&:hover": { color: "#108B4E", background: isDark ? "#0D2E1A" : "#F0FDF4" },
+                  }}
                 >
                   {social.icon}
                 </IconButton>
@@ -116,7 +121,7 @@ export default function Footer() {
 
           {Object.entries(footerLinks).map(([category, links]) => (
             <Grid key={category} size={{ xs: 6, sm: 3, md: 2 }}>
-              <Typography sx={{ fontSize: 14, fontWeight: 600, color: "#111827", textTransform: "uppercase", letterSpacing: "1px", mb: 2.5 }}>
+              <Typography sx={{ fontSize: 14, fontWeight: 600, color: isDark ? "#F0F0F0" : "#111827", textTransform: "uppercase", letterSpacing: "1px", mb: 2.5 }}>
                 {category}
               </Typography>
               <Stack spacing={1.5}>
@@ -127,7 +132,7 @@ export default function Footer() {
                     href="#"
                     sx={{
                       fontSize: 15,
-                      color: "#6B7280",
+                      color: isDark ? "#888888" : "#6B7280",
                       transition: "color 0.2s",
                       "&:hover": { color: "#108B4E" },
                     }}
@@ -140,7 +145,7 @@ export default function Footer() {
           ))}
         </Grid>
 
-        <Divider sx={{ borderColor: "#E5E7EB", mb: 4 }} />
+        <Divider sx={{ borderColor: isDark ? "#2A2A2A" : "#E5E7EB", mb: 4 }} />
 
         <Stack
           direction={{ xs: "column", sm: "row" }}
@@ -148,17 +153,17 @@ export default function Footer() {
           alignItems={{ xs: "flex-start", sm: "center" }}
           spacing={2}
         >
-          <Typography sx={{ fontSize: 14, color: "#6B7280" }}>
+          <Typography sx={{ fontSize: 14, color: isDark ? "#888888" : "#6B7280" }}>
             &copy; {new Date().getFullYear()} NovaStudio. All rights reserved.
           </Typography>
           <Stack direction="row" spacing={3}>
-            <Typography component="a" href="#" sx={{ fontSize: 14, color: "#6B7280", "&:hover": { color: "#111827" } }}>
+            <Typography component="a" href="#" sx={{ fontSize: 14, color: isDark ? "#888888" : "#6B7280", "&:hover": { color: isDark ? "#F0F0F0" : "#111827" } }}>
               Privacy Policy
             </Typography>
-            <Typography component="a" href="#" sx={{ fontSize: 14, color: "#6B7280", "&:hover": { color: "#111827" } }}>
+            <Typography component="a" href="#" sx={{ fontSize: 14, color: isDark ? "#888888" : "#6B7280", "&:hover": { color: isDark ? "#F0F0F0" : "#111827" } }}>
               Terms of Service
             </Typography>
-            <Typography component="a" href="#" sx={{ fontSize: 14, color: "#6B7280", "&:hover": { color: "#111827" } }}>
+            <Typography component="a" href="#" sx={{ fontSize: 14, color: isDark ? "#888888" : "#6B7280", "&:hover": { color: isDark ? "#F0F0F0" : "#111827" } }}>
               Cookies
             </Typography>
           </Stack>

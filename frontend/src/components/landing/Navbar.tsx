@@ -15,6 +15,9 @@ import {
   Fade,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
+import DarkModeIcon from "@mui/icons-material/DarkMode";
+import LightModeIcon from "@mui/icons-material/LightMode";
+import { useThemeMode } from "@/context/ThemeContext";
 
 const navItems = [
   { label: "Home", href: "#home" },
@@ -27,6 +30,7 @@ const navItems = [
 export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const trigger = useScrollTrigger({ disableHysteresis: true, threshold: 50 });
+  const { isDark, toggle } = useThemeMode();
 
   const handleDrawerToggle = () => setMobileOpen(!mobileOpen);
 
@@ -48,11 +52,13 @@ export default function Navbar() {
           <Stack
             alignItems="center"
             sx={{
-              maxWidth: 606,
+              maxWidth: 680,
               mx: "auto",
               height: 56,
               borderRadius: "18px",
-              background: trigger ? "rgba(50,50,50,0.95)" : "#323232",
+              background: trigger
+                ? isDark ? "rgba(26,26,26,0.95)" : "rgba(50,50,50,0.95)"
+                : isDark ? "#1A1A1A" : "#323232",
               backdropFilter: trigger ? "blur(20px)" : "none",
               WebkitBackdropFilter: trigger ? "blur(20px)" : "none",
               px: 0.5,
@@ -111,42 +117,57 @@ export default function Navbar() {
               ))}
             </Stack>
 
-            <IconButton
-              onClick={handleDrawerToggle}
-              sx={{
-                display: { xs: "flex", md: "none" },
-                color: "#ccc",
-                borderRadius: "14px",
-                width: 40,
-                height: 40,
-                background: "rgba(255,255,255,0.05)",
-                "&:hover": { background: "rgba(255,255,255,0.1)", color: "#fff" },
-              }}
-            >
-              <MenuIcon sx={{ fontSize: 22 }} />
-            </IconButton>
+            <Stack direction="row" alignItems="center" gap={0.5}>
+              <IconButton
+                onClick={toggle}
+                sx={{
+                  width: 36,
+                  height: 36,
+                  borderRadius: "10px",
+                  color: "#FFF",
+                  background: "rgba(255,255,255,0.08)",
+                  "&:hover": { background: "rgba(255,255,255,0.15)" },
+                }}
+              >
+                {isDark ? <LightModeIcon sx={{ fontSize: 18 }} /> : <DarkModeIcon sx={{ fontSize: 18 }} />}
+              </IconButton>
 
-            <Button
-              href="/admin/login"
-              sx={{
-                display: { xs: "none", md: "flex" },
-                alignItems: "center",
-                justifyContent: "center",
-                height: 40,
-                px: 2.5,
-                borderRadius: "12px",
-                background: "#108B4E",
-                color: "#FFF",
-                fontSize: 16,
-                fontWeight: 500,
-                letterSpacing: "-0.5px",
-                textTransform: "none",
-                boxShadow: "inset 0 -1px 3px rgba(0,0,0,0.15), inset 0 -4px 8px rgba(0,0,0,0.1)",
-                "&:hover": { background: "#0D7A42" },
-              }}
-            >
-              Get started
-            </Button>
+              <IconButton
+                onClick={handleDrawerToggle}
+                sx={{
+                  display: { xs: "flex", md: "none" },
+                  color: "#ccc",
+                  borderRadius: "10px",
+                  width: 36,
+                  height: 36,
+                  background: "rgba(255,255,255,0.05)",
+                  "&:hover": { background: "rgba(255,255,255,0.1)", color: "#fff" },
+                }}
+              >
+                <MenuIcon sx={{ fontSize: 20 }} />
+              </IconButton>
+
+              <Button
+                href="/admin/login"
+                sx={{
+                  display: { xs: "none", md: "flex" },
+                  alignItems: "center",
+                  justifyContent: "center",
+                  height: 36,
+                  px: 2.5,
+                  borderRadius: "10px",
+                  background: "#108B4E",
+                  color: "#FFF",
+                  fontSize: 14,
+                  fontWeight: 500,
+                  letterSpacing: "-0.3px",
+                  textTransform: "none",
+                  "&:hover": { background: "#0D7A42" },
+                }}
+              >
+                Get started
+              </Button>
+            </Stack>
           </Stack>
         </Box>
       </Fade>
@@ -163,7 +184,7 @@ export default function Navbar() {
             maxWidth: 400,
             mx: "auto",
             borderRadius: "24px",
-            background: "#323232",
+            background: isDark ? "#1A1A1A" : "#323232",
             p: 2,
             boxShadow: "0 20px 40px rgba(0,0,0,0.3)",
           }}
@@ -191,7 +212,6 @@ export default function Navbar() {
                   fontSize: 16,
                   fontWeight: 500,
                   textTransform: "none",
-                  boxShadow: "inset 0 -1px 3px rgba(0,0,0,0.15)",
                   "&:hover": { background: "#0D7A42" },
                 }}
               >

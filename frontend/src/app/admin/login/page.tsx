@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
+import { useThemeMode } from "@/context/ThemeContext";
 import {
   Box,
   Typography,
@@ -24,6 +25,7 @@ export default function AdminLogin() {
   const [showPassword, setShowPassword] = useState(false);
   const { login } = useAuth();
   const router = useRouter();
+  const { isDark } = useThemeMode();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -46,7 +48,7 @@ export default function AdminLogin() {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        background: "#F8FAFC",
+        background: isDark ? "#111111" : "#F8FAFC",
         px: 3,
       }}
     >
@@ -56,7 +58,7 @@ export default function AdminLogin() {
           <Box sx={{ width: 44, height: 44, borderRadius: "12px", background: "#108B4E", display: "flex", alignItems: "center", justifyContent: "center" }}>
             <Typography sx={{ color: "#FFF", fontWeight: 700, fontSize: 22 }}>N</Typography>
           </Box>
-          <Typography sx={{ fontSize: 24, fontWeight: 600, color: "#111827", letterSpacing: "-0.5px" }}>
+          <Typography sx={{ fontSize: 24, fontWeight: 600, color: isDark ? "#F0F0F0" : "#111827", letterSpacing: "-0.5px" }}>
             NovaStudio
           </Typography>
         </Stack>
@@ -64,24 +66,26 @@ export default function AdminLogin() {
         {/* Card */}
         <Box
           sx={{
-            background: "#FFFFFF",
+            background: isDark ? "#1A1A1A" : "#FFFFFF",
             borderRadius: "20px",
             p: { xs: 4, md: 5 },
-            boxShadow: "0 1px 3px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.03)",
-            border: "1px solid #F3F4F6",
+            boxShadow: isDark
+              ? "0 1px 3px rgba(0,0,0,0.2), 0 4px 12px rgba(0,0,0,0.15)"
+              : "0 1px 3px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.03)",
+            border: isDark ? "1px solid #2A2A2A" : "1px solid #F3F4F6",
           }}
         >
-          <Typography sx={{ fontSize: 22, fontWeight: 600, color: "#111827", mb: 0.5, textAlign: "center" }}>
+          <Typography sx={{ fontSize: 22, fontWeight: 600, color: isDark ? "#F0F0F0" : "#111827", mb: 0.5, textAlign: "center" }}>
             Sign in
           </Typography>
-          <Typography sx={{ fontSize: 15, color: "#6B7280", mb: 4, textAlign: "center" }}>
+          <Typography sx={{ fontSize: 15, color: isDark ? "#888888" : "#6B7280", mb: 4, textAlign: "center" }}>
             Enter your credentials to access the dashboard
           </Typography>
 
           <Box component="form" onSubmit={handleSubmit}>
             <Stack spacing={2.5}>
               <Box>
-                <Typography sx={{ fontSize: 13, fontWeight: 500, color: "#374151", mb: 0.75 }}>
+                <Typography sx={{ fontSize: 13, fontWeight: 500, color: isDark ? "#D4D4D4" : "#374151", mb: 0.75 }}>
                   Email address
                 </Typography>
                 <TextField
@@ -92,14 +96,22 @@ export default function AdminLogin() {
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="admin@novastudio.com"
                   size="medium"
+                  slotProps={{
+                    input: {
+                      sx: {
+                        color: isDark ? "#F0F0F0" : "#111827",
+                        "&::placeholder": { color: isDark ? "#666666" : "#9CA3AF" },
+                      },
+                    },
+                  }}
                   sx={{
                     "& .MuiOutlinedInput-root": {
                       borderRadius: "10px",
                       fontSize: 14,
-                      backgroundColor: "#F9FAFB",
-                      "&:hover": { backgroundColor: "#F3F4F6" },
-                      "& fieldset": { borderColor: "#E5E7EB" },
-                      "&:hover fieldset": { borderColor: "#D1D5DB" },
+                      backgroundColor: isDark ? "#222222" : "#F9FAFB",
+                      "&:hover": { backgroundColor: isDark ? "#2A2A2A" : "#F3F4F6" },
+                      "& fieldset": { borderColor: isDark ? "#3A3A3A" : "#E5E7EB" },
+                      "&:hover fieldset": { borderColor: isDark ? "#555555" : "#D1D5DB" },
                     },
                     "& .Mui-focused fieldset": { borderColor: "#108B4E", borderWidth: 1 },
                   }}
@@ -107,7 +119,7 @@ export default function AdminLogin() {
               </Box>
 
               <Box>
-                <Typography sx={{ fontSize: 13, fontWeight: 500, color: "#374151", mb: 0.75 }}>
+                <Typography sx={{ fontSize: 13, fontWeight: 500, color: isDark ? "#D4D4D4" : "#374151", mb: 0.75 }}>
                   Password
                 </Typography>
                 <TextField
@@ -125,22 +137,26 @@ export default function AdminLogin() {
                           <IconButton
                             onClick={() => setShowPassword(!showPassword)}
                             edge="end"
-                            sx={{ color: "#9CA3AF" }}
+                            sx={{ color: isDark ? "#888888" : "#9CA3AF" }}
                           >
                             {showPassword ? <VisibilityOff /> : <Visibility />}
                           </IconButton>
                         </InputAdornment>
                       ),
+                      sx: {
+                        color: isDark ? "#F0F0F0" : "#111827",
+                        "&::placeholder": { color: isDark ? "#666666" : "#9CA3AF" },
+                      },
                     },
                   }}
                   sx={{
                     "& .MuiOutlinedInput-root": {
                       borderRadius: "10px",
                       fontSize: 14,
-                      backgroundColor: "#F9FAFB",
-                      "&:hover": { backgroundColor: "#F3F4F6" },
-                      "& fieldset": { borderColor: "#E5E7EB" },
-                      "&:hover fieldset": { borderColor: "#D1D5DB" },
+                      backgroundColor: isDark ? "#222222" : "#F9FAFB",
+                      "&:hover": { backgroundColor: isDark ? "#2A2A2A" : "#F3F4F6" },
+                      "& fieldset": { borderColor: isDark ? "#3A3A3A" : "#E5E7EB" },
+                      "&:hover fieldset": { borderColor: isDark ? "#555555" : "#D1D5DB" },
                     },
                     "& .Mui-focused fieldset": { borderColor: "#108B4E", borderWidth: 1 },
                   }}
@@ -168,7 +184,7 @@ export default function AdminLogin() {
                   boxShadow: "none",
                   mt: 0.5,
                   "&:hover": { background: "#0D7A42", boxShadow: "none" },
-                  "&.Mui-disabled": { background: "#E5E7EB", boxShadow: "none" },
+                  "&.Mui-disabled": { background: isDark ? "#2A2A2A" : "#E5E7EB", boxShadow: "none" },
                 }}
               >
                 {loading ? "Signing in..." : "Sign In"}
@@ -177,7 +193,7 @@ export default function AdminLogin() {
           </Box>
         </Box>
 
-        <Typography sx={{ textAlign: "center", fontSize: 13, color: "#9CA3AF", mt: 4 }}>
+        <Typography sx={{ textAlign: "center", fontSize: 13, color: isDark ? "#666666" : "#9CA3AF", mt: 4 }}>
           &copy; {new Date().getFullYear()} NovaStudio
         </Typography>
       </Box>

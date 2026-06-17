@@ -3,6 +3,7 @@
 import { useEffect, useState, useRef } from "react";
 import { Box, Typography, Grid, Stack, Chip } from "@mui/material";
 import { getStats } from "@/services/api";
+import { useThemeMode } from "@/context/ThemeContext";
 import TrendingUpIcon from "@mui/icons-material/TrendingUp";
 import GroupsIcon from "@mui/icons-material/Groups";
 import WorkspacePremiumIcon from "@mui/icons-material/WorkspacePremium";
@@ -22,8 +23,8 @@ function AnimatedNumber({ target, duration = 2000 }: { target: number; duration?
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting && !started.current) {
-          started.current = true;
+        if (entry.isIntersecting) {
+          started.current = false;
           const start = performance.now();
           const animate = (now: number) => {
             const elapsed = now - start;
@@ -45,20 +46,20 @@ function AnimatedNumber({ target, duration = 2000 }: { target: number; duration?
 }
 
 export default function Stats() {
+  const { isDark } = useThemeMode();
   const [stats, setStats] = useState<Stat>({
     id: "",
-    projectsCompleted: 150,
-    clientWorldwide: 50,
-    experience: 8,
+    projectsCompleted: 0,
+    clientWorldwide: 0,
+    experience: 0,
   });
 
   useEffect(() => {
     getStats()
       .then((data) => {
-        if (Array.isArray(data) && data.length > 0) {
-          setStats(data[0]);
-        } else if (data && data.id) {
-          setStats(data);
+        const arr = Array.isArray(data) ? data : [];
+        if (arr.length > 0) {
+          setStats(arr[0]);
         }
       })
       .catch(() => {});
@@ -91,7 +92,7 @@ export default function Stats() {
       sx={{
         py: { xs: 8, md: 14 },
         px: { xs: 3, lg: 0 },
-        background: "#F5F5F4",
+        background: isDark ? "#111111" : "#F5F5F4",
       }}
     >
       <Box sx={{ maxWidth: 1120, mx: "auto" }}>
@@ -103,11 +104,11 @@ export default function Stats() {
               mb: 3,
               height: 32,
               borderRadius: "100px",
-              background: "#FFFFFF",
-              border: "1px solid #E5E7EB",
+              background: isDark ? "#1A1A1A" : "#FFFFFF",
+              border: isDark ? "1px solid #2A2A2A" : "1px solid #E5E7EB",
               fontSize: 14,
               fontWeight: 500,
-              color: "#6B7280",
+              color: isDark ? "#888888" : "#6B7280",
             }}
           />
           <Typography
@@ -117,7 +118,7 @@ export default function Stats() {
               fontWeight: 600,
               letterSpacing: "-2.5px",
               lineHeight: { xs: 1.15, md: 1.1 },
-              color: "#111827",
+              color: isDark ? "#F0F0F0" : "#111827",
               mb: 2,
             }}
           >
@@ -133,28 +134,30 @@ export default function Stats() {
               speak
             </Box>
           </Typography>
-          <Typography sx={{ fontSize: { xs: 17, md: 20 }, color: "#6B7280", maxWidth: 440, lineHeight: 1.6 }}>
+          <Typography sx={{ fontSize: { xs: 17, md: 20 }, color: isDark ? "#888888" : "#6B7280", maxWidth: 440, lineHeight: 1.6 }}>
             Our track record of delivering results that matter
           </Typography>
         </Stack>
 
         {/* Stats Grid */}
         <Grid container spacing={3}>
-          {items.map((item, i) => (
+          {items.map((item) => (
             <Grid key={item.label} size={{ xs: 12, md: 4 }}>
               <Box
                 sx={{
                   position: "relative",
                   borderRadius: "24px",
-                  background: "#FFFFFF",
-                  border: "1px solid #F3F4F6",
+                  background: isDark ? "#1A1A1A" : "#FFFFFF",
+                  border: isDark ? "1px solid #2A2A2A" : "1px solid #F3F4F6",
                   p: { xs: 5, md: 6 },
                   overflow: "hidden",
                   transition: "all 0.3s ease",
                   "&:hover": {
                     transform: "translateY(-4px)",
-                    boxShadow: "0 20px 40px rgba(0,0,0,0.06)",
-                    borderColor: "#E5E7EB",
+                    boxShadow: isDark
+                      ? "0 20px 40px rgba(0,0,0,0.3)"
+                      : "0 20px 40px rgba(0,0,0,0.06)",
+                    borderColor: isDark ? "#3A3A3A" : "#E5E7EB",
                   },
                   "&::before": {
                     content: '""',
@@ -164,7 +167,9 @@ export default function Stats() {
                     width: "200px",
                     height: "200px",
                     borderRadius: "50%",
-                    background: "rgba(16,139,78,0.05)",
+                    background: isDark
+                      ? "rgba(16,139,78,0.08)"
+                      : "rgba(16,139,78,0.05)",
                     pointerEvents: "none",
                   },
                   "&::after": {
@@ -175,7 +180,9 @@ export default function Stats() {
                     width: "150px",
                     height: "150px",
                     borderRadius: "50%",
-                    background: "rgba(16,139,78,0.03)",
+                    background: isDark
+                      ? "rgba(16,139,78,0.05)"
+                      : "rgba(16,139,78,0.03)",
                     pointerEvents: "none",
                   },
                 }}
@@ -185,7 +192,7 @@ export default function Stats() {
                     width: 44,
                     height: 44,
                     borderRadius: "12px",
-                    background: "#F0FDF4",
+                    background: isDark ? "#0D2E1A" : "#F0FDF4",
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
@@ -203,7 +210,7 @@ export default function Stats() {
                     letterSpacing: "-3px",
                     lineHeight: 1,
                     mb: 1.5,
-                    color: "#111827",
+                    color: isDark ? "#F0F0F0" : "#111827",
                   }}
                 >
                   <AnimatedNumber target={item.value} />
@@ -224,14 +231,14 @@ export default function Stats() {
                   sx={{
                     fontSize: 18,
                     fontWeight: 600,
-                    color: "#111827",
+                    color: isDark ? "#F0F0F0" : "#111827",
                     mb: 0.5,
                     letterSpacing: "-0.3px",
                   }}
                 >
                   {item.label}
                 </Typography>
-                <Typography sx={{ fontSize: 14, color: "#6B7280", lineHeight: 1.5 }}>
+                <Typography sx={{ fontSize: 14, color: isDark ? "#888888" : "#6B7280", lineHeight: 1.5 }}>
                   {item.description}
                 </Typography>
               </Box>

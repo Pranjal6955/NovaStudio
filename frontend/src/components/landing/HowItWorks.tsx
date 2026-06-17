@@ -26,9 +26,12 @@ const steps = [
   },
 ];
 
+import { useThemeMode } from "@/context/ThemeContext";
+
 export default function HowItWorks() {
+  const { isDark } = useThemeMode();
   return (
-    <Box sx={{ py: { xs: 8, md: 14 }, px: { xs: 3, lg: 0 }, background: "#F5F5F4" }}>
+    <Box sx={{ py: { xs: 8, md: 14 }, px: { xs: 3, lg: 0 }, background: isDark ? "#111111" : "#F5F5F4" }}>
       <Box sx={{ maxWidth: 1120, mx: "auto" }}>
         <Stack alignItems="center" textAlign="center" sx={{ mb: { xs: 6, md: 10 } }}>
           <Chip
@@ -37,11 +40,11 @@ export default function HowItWorks() {
               mb: 3,
               height: 32,
               borderRadius: "100px",
-              background: "#FFFFFF",
-              border: "1px solid #E5E7EB",
+              background: isDark ? "#1A1A1A" : "#FFFFFF",
+              border: isDark ? "1px solid #2A2A2A" : "1px solid #E5E7EB",
               fontSize: 14,
               fontWeight: 500,
-              color: "#6B7280",
+              color: isDark ? "#888888" : "#6B7280",
             }}
           />
           <Typography
@@ -51,7 +54,7 @@ export default function HowItWorks() {
               fontWeight: 600,
               letterSpacing: "-2.5px",
               lineHeight: { xs: 1.15, md: 1.1 },
-              color: "#111827",
+              color: isDark ? "#F0F0F0" : "#111827",
               mb: 2,
             }}
           >
@@ -61,7 +64,7 @@ export default function HowItWorks() {
           <Typography
             sx={{
               fontSize: { xs: 17, md: 20 },
-              color: "#6B7280",
+              color: isDark ? "#888888" : "#6B7280",
               maxWidth: 480,
               lineHeight: 1.6,
             }}
@@ -71,19 +74,21 @@ export default function HowItWorks() {
         </Stack>
 
         <Stack direction={{ xs: "column", md: "row" }} spacing={4}>
-          {steps.map((step, i) => (
+          {steps.map((step) => (
             <Box
               key={step.num}
               sx={{
                 flex: 1,
                 p: { xs: 5, md: 6 },
                 borderRadius: "20px",
-                background: "#FFFFFF",
-                border: "1px solid #F3F4F6",
+                background: isDark ? "#1A1A1A" : "#FFFFFF",
+                border: isDark ? "1px solid #2A2A2A" : "1px solid #F3F4F6",
                 position: "relative",
                 transition: "all 0.3s ease",
                 "&:hover": {
-                  boxShadow: "0 20px 40px rgba(0,0,0,0.06)",
+                  boxShadow: isDark
+                    ? "0 20px 40px rgba(0,0,0,0.3)"
+                    : "0 20px 40px rgba(0,0,0,0.06)",
                   transform: "translateY(-4px)",
                 },
               }}
@@ -92,7 +97,7 @@ export default function HowItWorks() {
                 sx={{
                   fontSize: 64,
                   fontWeight: 700,
-                  color: "#F3F4F6",
+                  color: isDark ? "#2A2A2A" : "#F3F4F6",
                   position: "absolute",
                   top: 16,
                   right: 24,
@@ -107,7 +112,9 @@ export default function HowItWorks() {
                   width: 48,
                   height: 48,
                   borderRadius: "14px",
-                  background: "linear-gradient(135deg, #ECFDF5 0%, #D1FAE5 100%)",
+                  background: isDark
+                    ? "linear-gradient(135deg, #0D2E1A 0%, #0A1F12 100%)"
+                    : "linear-gradient(135deg, #ECFDF5 0%, #D1FAE5 100%)",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
@@ -120,14 +127,14 @@ export default function HowItWorks() {
                 sx={{
                   fontSize: 22,
                   fontWeight: 600,
-                  color: "#111827",
+                  color: isDark ? "#F0F0F0" : "#111827",
                   mb: 1.5,
                   letterSpacing: "-0.5px",
                 }}
               >
                 {step.title}
               </Typography>
-              <Typography sx={{ fontSize: 16, lineHeight: 1.6, color: "#6B7280" }}>
+              <Typography sx={{ fontSize: 16, lineHeight: 1.6, color: isDark ? "#888888" : "#6B7280" }}>
                 {step.description}
               </Typography>
             </Box>
