@@ -17,7 +17,7 @@ async function main() {
     data: {
       name: "Pranjal Negi",
       email: "admin@novastudio.com",
-      password: adminPassword,
+      password: admin123,
     },
   });
   console.log("✅ Admin seeded successfully");
