@@ -1,4 +1,4 @@
-import { ObjectEnumValue } from "@prisma/client/runtime/library";
+
 import mongoose from "mongoose";
 
 const analyticsSchema = new mongoose.Schema({

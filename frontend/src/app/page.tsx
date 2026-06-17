@@ -1,12 +1,16 @@
 
-import { Container,Typography } from "@mui/material"
+import Hero from "@/components/Hero/Hero"
+import Navbar from "@/components/Navbar/Navbar"
+import Services from "@/components/Service/Services"
+
+
 
 export default function Home() {
   return (
-    <Container sx={{mt:10}}>
-      <Typography variant="h1">
-        Nove Studio
-      </Typography>
-    </Container>
+    <>
+    <Navbar />
+    <Hero />
+    <Services />
+    </>
   )
 }

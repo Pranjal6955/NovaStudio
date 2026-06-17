@@ -3,6 +3,7 @@ import dotenv from "dotenv"
 dotenv.config()
 import morgan from "morgan"
 import cookieParser from "cookie-parser";
+import cors from "cors"
 
 import { serviceRouter } from "./routes/service.routes.js";
 import { projectRoute } from "./routes/project.routes.js";
@@ -16,6 +17,13 @@ import { connectMongoToDB } from "./config/mongodb.js";
 
 const app = express();
 const PORT = process.env.PORT
+
+app.use(
+    cors({
+        origin:"http://localhost:3000",
+        Credential:true,
+    })
+)
 
 await connectPrismaToDB()
 await connectMongoToDB()

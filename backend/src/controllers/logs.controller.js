@@ -1,4 +1,4 @@
-import { Logs } from "../models/logs.model"
+import { Logs } from "../models/logs.model.js"
 
 export const getLogsController = async (req,res) =>{ 
     try {
