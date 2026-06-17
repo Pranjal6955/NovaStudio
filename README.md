@@ -8,7 +8,6 @@ AI-powered digital agency platform. Build, launch, and scale digital products fa
 NovaStudio/
 ├── frontend/     # Next.js 16 (App Router) + MUI v7 — Landing page + Admin dashboard
 ├── backend/      # Express 5 + Prisma (PostgreSQL) + Mongoose (MongoDB) — REST API
-└── valzy-web/    # Vite + React + Tailwind — Client-facing app
 ```
 
 ---
