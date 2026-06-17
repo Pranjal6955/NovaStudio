@@ -34,8 +34,8 @@ export const createService = async (req,res) => {
                 action : "CREATE_SERVICE",
                 adminId : req.admin.id,
                 details : {
-                    seriveId :service.id,
-                    serviceTitle : service.title
+                    serviceId :createServices.id,
+                    serviceTitle : createServices.title
                 }
             })
         } catch (error) {
@@ -76,7 +76,7 @@ export const deleteServiceById = async (req,res) => {
         })
         try {
             await Logs.create({
-                action : "DELETE_PROJECT",
+                action : "DELETE_SERVICE",
                 adminId : req.admin.id,
                 details : {
                     serviceId: service.id
@@ -119,7 +119,7 @@ export const updateService = async (req,res) => {
     try {
         await Logs.create({
             action : "UPDATE_SERVICE",
-            admin : req.admin.id,
+            adminId : req.admin.id,
             details : {
                 serviceId : service.id
             }

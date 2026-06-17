@@ -36,8 +36,8 @@ export const createProject = async (req,res) => {
             action : "CREATE_PROJECT",
             adminId : req.admin.id,
             details : {
-                projectId : project.id,
-                projectTitle : project.title,
+                projectId : createdProject.id,
+                projectTitle : createdProject.title,
             }
         })
         } catch (error) {

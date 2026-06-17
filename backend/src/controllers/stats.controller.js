@@ -21,16 +21,16 @@ export const getStats = async(req,res) => {
 
 export const updateStats = async (req,res) => {
     try {
-        const {id} = req.params
-        const project = await prisma.stat.findUnique({
-            where:{id}
-        })
-        if(!project){
-            return res.status(404).json({
-                success : false,
-                message : "Project not found"
-            })
-        }
+         const {id} = req.params
+         const stat = await prisma.stat.findUnique({
+             where:{id}
+         })
+         if(!stat){
+             return res.status(404).json({
+                 success : false,
+                 message : "Stat not found"
+             })
+         }
         const updateStats = await prisma.stat.update({
             where : {id},
             data : req.body,

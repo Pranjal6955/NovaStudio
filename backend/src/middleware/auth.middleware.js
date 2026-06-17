@@ -1,12 +1,12 @@
 import jwt from "jsonwebtoken"
 import { prisma } from "../config/prisma.js"
 
-export const protect = async(req,res) => {
+export const protect = async(req,res,next) => {
     try {
-         const token = req.cookies?.token
+         const token = req.cookies?.novaStudio_token || req.cookies?.token
 
          if(!token){
-            res.status(401).json({
+            return res.status(401).json({
                 success : false,
                 message : "Authentication Required",
             })
@@ -25,7 +25,7 @@ export const protect = async(req,res) => {
          })
 
          if(!admin){
-            res.status(401).json({
+            return res.status(401).json({
                 success : false,
                 message : "Admin not found",
             })

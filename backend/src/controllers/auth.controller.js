@@ -80,7 +80,7 @@ export const logoutAdminController = async(req,res) => {
             action : "LOGOUT",
             adminId : req.admin.id,
             details : {
-                email : admin.email
+                email : req.admin.email
             }
         })   
         } catch (error) {

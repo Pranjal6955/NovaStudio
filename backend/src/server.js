@@ -21,14 +21,17 @@ const PORT = process.env.PORT
 app.use(
     cors({
         origin:"http://localhost:3000",
-        Credential:true,
+        credentials:true,
     })
 )
+
+app.use(express.json())
+app.use(morgan("dev"))
+app.use(cookieParser())
 
 await connectPrismaToDB()
 await connectMongoToDB()
 
-app.use(express.json())
 app.get("/",(req,res)=>{
     return res.status(200).json({message:"Welcome to NovaStudio : Backend is Live"})
 })
@@ -39,9 +42,6 @@ app.use("/api/contact",contactRoute)
 app.use("/api/admin",authRoute)
 app.use("/api/analytic",analyticsRouter)
 app.use("/api/logs",logsRouter)
-
-app.use(morgan("dev"))
-app.use(cookieParser())
 
 app.listen(PORT,()=>{
     console.log(`Server is running on http://localhost:${PORT}`)

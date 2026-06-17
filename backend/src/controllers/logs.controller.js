@@ -2,7 +2,7 @@ import { Logs } from "../models/logs.model.js"
 
 export const getLogsController = async (req,res) =>{ 
     try {
-        const logs = (await Logs.find()).sort({createdAt : -1}).limit(50);
+        const logs = await Logs.find().sort({createdAt : -1}).limit(50);
 
         return res.status(200).json({
             success : true,

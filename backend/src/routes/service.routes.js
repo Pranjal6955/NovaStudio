@@ -9,7 +9,7 @@ export const serviceRouter = Router();
 
 serviceRouter.get("/",getService)
 serviceRouter.post("/",protect,createService)
-serviceRouter.delete("/:id",deleteServiceById)
+serviceRouter.delete("/:id",protect,deleteServiceById)
 serviceRouter.put("/:id",protect,updateService)
 
 

@@ -19,7 +19,7 @@ const logsSchema = new mongoose.Schema({
     },
     adminId : {
         type : String,
-        required : true,
+        required : false,
     },
     details : {
         type : Object,
