@@ -55,9 +55,7 @@ export default function AdminLogin() {
       <Box sx={{ width: "100%", maxWidth: 440 }}>
         {/* Logo */}
         <Stack direction="row" alignItems="center" justifyContent="center" spacing={1.5} sx={{ mb: 8 }}>
-          <Box sx={{ width: 44, height: 44, borderRadius: "12px", background: "#108B4E", display: "flex", alignItems: "center", justifyContent: "center" }}>
-            <Typography sx={{ color: "#FFF", fontWeight: 700, fontSize: 22 }}>N</Typography>
-          </Box>
+          <img src="/Logo.svg" alt="NovaStudio" style={{ width: 44, height: 44 }} />
           <Typography sx={{ fontSize: 24, fontWeight: 600, color: isDark ? "#F0F0F0" : "#111827", letterSpacing: "-0.5px" }}>
             NovaStudio
           </Typography>

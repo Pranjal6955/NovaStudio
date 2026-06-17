@@ -78,14 +78,13 @@ export default function Navbar() {
                 justifyContent: "center",
                 width: 40,
                 height: 40,
-                borderRadius: "14px",
-                background: "#108B4E",
                 flexShrink: 0,
+                ml: 0.5,
                 transition: "transform 0.2s",
                 "&:hover": { transform: "scale(1.05)" },
               }}
             >
-              <Typography sx={{ color: "#FFF", fontWeight: 700, fontSize: 20 }}>N</Typography>
+              <img src="/Logo.svg" alt="NovaStudio" style={{ width: 36, height: 36 }} />
             </Box>
 
             <Stack
