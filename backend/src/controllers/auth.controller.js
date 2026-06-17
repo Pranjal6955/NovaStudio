@@ -21,13 +21,29 @@ export const authAdminLoginController = async(req,res) => {
             })
         }
 
-        const isPasswordMatch = await bcryptjs.compare(password,admin.password)
-        
+        let isPasswordMatch = false
+        try {
+            isPasswordMatch = await bcryptjs.compare(password, admin.password)
+        } catch {
+            // stored password isn't a valid bcrypt hash (e.g. legacy plain text)
+            // fall back to direct comparison and upgrade on match
+            isPasswordMatch = password === admin.password
+        }
+
         if(!isPasswordMatch){
             return res.status(401).json({
                 success : false,
                 message : "Invalid Password"
             })
+        }
+
+        // upgrade plain-text password to bcrypt hash if needed
+        if (!admin.password.startsWith("$2")) {
+            const hashed = await bcryptjs.hash(password, 10)
+            await prisma.admin.update({
+                where: { id: admin.id },
+                data: { password: hashed },
+            }).catch(() => {})
         }
         const token = jwt.sign(
             {adminId : admin.id, adminEmail : admin.email},
@@ -67,11 +83,12 @@ export const authAdminLoginController = async(req,res) => {
         })
 
     } catch (error) {
+        console.error("Login error:", error)
         return res.status(500).json({
             success : false,
             message : "Internal Server Error"
         })
-        
+
     }
 }
 

@@ -5,19 +5,31 @@ const prisma = new PrismaClient();
 
 async function main() {
   const existingAdmin = await prisma.admin.findFirst();
+
+  const adminPassword = await bcryptjs.hash("admin123", 10);
+
   if (existingAdmin) {
-    console.log("⚠️  Data already exists — skipping seed.");
+    const needsUpdate = existingAdmin.password !== adminPassword
+      && !existingAdmin.password.startsWith("$2");
+    if (needsUpdate) {
+      await prisma.admin.update({
+        where: { id: existingAdmin.id },
+        data: { password: adminPassword },
+      });
+      console.log("✅ Admin password updated (was plain text)");
+    } else {
+      console.log("⚠️  Admin already exists with hashed password — skipping.");
+    }
     return;
   }
 
   console.log("🌱 Seeding database...\n");
 
-  const adminPassword = await bcryptjs.hash("admin123", 10);
   await prisma.admin.create({
     data: {
       name: "Pranjal Negi",
       email: "admin@novastudio.com",
-      password: "admin123",
+      password: adminPassword,
     },
   });
   console.log("✅ Admin seeded successfully");
