@@ -236,20 +236,13 @@ export default function AdminDashboard() {
 
   if (isLoading || !isAuthenticated) return null;
 
-  const today = new Date().toLocaleDateString("en-US", { weekday: "long", year: "numeric", month: "long", day: "numeric" });
   const sparkServices = Array.from({ length: 12 }, (_, i) => Math.floor(Math.random() * 5) + counts.services);
   const sparkProjects = Array.from({ length: 12 }, (_, i) => Math.floor(Math.random() * 4) + counts.projects);
   const sparkContacts = Array.from({ length: 12 }, (_, i) => Math.floor(Math.random() * 3) + counts.contacts);
   const sparkEvents = Array.from({ length: 12 }, (_, i) => Math.floor(Math.random() * 20) + 5);
 
   return (
-    <Box sx={{ p: { xs: 3, md: 5 }, transition: "background 0.2s, color 0.2s, border-color 0.2s" }}>
-      {/* Header */}
-      <Box sx={{ mb: 6 }}>
-        <Typography sx={{ fontSize: 28, fontWeight: 700, color: t.text, letterSpacing: "-0.5px" }}>Dashboard</Typography>
-        <Typography sx={{ fontSize: 14, color: t.textMuted, mt: 0.5 }}>{today}</Typography>
-      </Box>
-
+    <Box sx={{ transition: "background 0.2s, color 0.2s, border-color 0.2s" }}>
       {/* Metric Cards */}
       <Grid container spacing={3} sx={{ mb: 6 }}>
         <Grid size={{ xs: 12, sm: 6, lg: 3 }}>
