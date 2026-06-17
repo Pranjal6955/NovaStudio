@@ -4,17 +4,14 @@ import bcryptjs from "bcryptjs";
 const prisma = new PrismaClient();
 
 async function main() {
-  console.log("🗑️  Clearing existing data...");
-  await prisma.contact.deleteMany();
-  await prisma.stat.deleteMany();
-  await prisma.project.deleteMany();
-  await prisma.service.deleteMany();
-  await prisma.admin.deleteMany();
-  console.log("✅ Database cleared\n");
+  const existingAdmin = await prisma.admin.findFirst();
+  if (existingAdmin) {
+    console.log("⚠️  Data already exists — skipping seed.");
+    return;
+  }
 
-  // ──────────────────────────────────────────────
-  // 1. Seed Admin
-  // ──────────────────────────────────────────────
+  console.log("🌱 Seeding database...\n");
+
   const adminPassword = await bcryptjs.hash("admin123", 10);
   await prisma.admin.create({
     data: {
@@ -25,9 +22,6 @@ async function main() {
   });
   console.log("✅ Admin seeded successfully");
 
-  // ──────────────────────────────────────────────
-  // 2. Seed Services
-  // ──────────────────────────────────────────────
   await prisma.service.createMany({
     data: [
       {
@@ -64,9 +58,6 @@ async function main() {
   });
   console.log("✅ Services seeded successfully");
 
-  // ──────────────────────────────────────────────
-  // 3. Seed Projects
-  // ──────────────────────────────────────────────
   await prisma.project.createMany({
     data: [
       {
@@ -121,9 +112,6 @@ async function main() {
   });
   console.log("✅ Projects seeded successfully");
 
-  // ──────────────────────────────────────────────
-  // 4. Seed Stats
-  // ──────────────────────────────────────────────
   await prisma.stat.create({
     data: {
       projectsCompleted: 50,
@@ -133,9 +121,6 @@ async function main() {
   });
   console.log("✅ Stats seeded successfully");
 
-  // ──────────────────────────────────────────────
-  // 5. Seed Contacts (sample submissions)
-  // ──────────────────────────────────────────────
   await prisma.contact.createMany({
     data: [
       {
